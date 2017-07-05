@@ -1,21 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div class="row"><div class="col-md-8 col-md-offset-2">
-                <div id="welcome">
-                    <h1>Welcome</h1>
-                </div>
-
-                <div>
-                    <h2>Please tell us more about you</h2>
-                    <p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>Please tell us more about you</h2>
+                <p>
                         Here goes the questionnaire
-                    </p>
-                    <p><a class="btn btn-default" href="{{ path('homepage') }}" role="button">Submit &raquo;</a></p>
-                </div>
-            </div></div>
+                        
+                        {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        {{ form_end(form) }}
+                </p>                
+            </div>
         </div>
     </div>
 {% endblock %}
