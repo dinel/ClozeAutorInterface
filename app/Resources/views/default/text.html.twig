@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/cloze.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row voffset4">
+            <div class="col-md-8">
+                <h3>Try to fill in the gaps using the words from the right</h3>
+                <div class="voffset4" id="text">
+                    {% set counter = 0 %}
+                    {% for word in text %}
+                        {% if word starts with "[" %}
+                            <div id="gap{{ counter }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
+                            {% set counter = counter + 1 %}
+                        {% else %}
+                            <span>{{ word }}</span>                             
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="voffset5">
+                    <a id="submit-result" class="btn btn-default disabled" href="{{ path('homepage') }}" role="button">Submit &raquo;</a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div id="words">
+                    {% set counter = 0 %}
+                    {% for word in text %}
+                        {% if word starts with "[" %}
+                            <div id="word{{ counter }}" ondragstart="drag(event)" 
+                                 class="filler filler-in-list" draggable="true">{{ word[1:-1] }}</div>
+                            {% set counter = counter + 1 %}
+                        {% endif %}                    
+                    {% endfor %}                                    
+                </div>
+                <script>
+                    var no_gaps = {{ counter }};
+                    var filled_gaps = 0;
+                </script>
+                
+            </div>
+        </div>
+    </div>                
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/cloze.js') }}"></script>
+{% endblock %}
