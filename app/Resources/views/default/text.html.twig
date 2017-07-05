@@ -28,7 +28,7 @@
             <div class="col-md-3">
                 <div id="words">
                     {% set counter = 0 %}
-                    {% for word in text %}
+                    {% for word in text|shuffle %}
                         {% if word starts with "[" %}
                             <div id="word{{ counter }}" ondragstart="drag(event)" 
                                  class="filler filler-in-list" draggable="true">{{ word[1:-1] }}</div>
