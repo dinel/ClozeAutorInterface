@@ -35,6 +35,7 @@ function drop(ev) {
 }
 
 $( document ).ready(function() {
+    $("#words").shuffleChildren();
     updateLog("Opened text");
     
     $('#text').on('click', '.filled-gap', function() {
@@ -80,3 +81,26 @@ function updateLog(s) {
     console.log("At " + d.getHours() + ":" + d.getMinutes() 
             + ":" + d.getSeconds() + ":" + s);
 }
+
+/* Inspired from https://css-tricks.com/snippets/jquery/shuffle-children/ */
+$.fn.shuffleChildren = function() {
+    $.each(this.get(), function(index, el) {
+        var $el = $(el);
+        var $find = $el.children();
+
+        /*
+        $find.sort(function() {
+            return 0.5 - Math.random();
+        });
+        */
+        
+        $find.sort(function(a, b) {
+            var vA = $(a).text();
+            var vB = $(b).text();
+            return (vA < vB) ? -1 : (vA > vB) ? 1 : 0;
+        });
+
+        $el.empty();
+        $find.appendTo($el);
+    });
+};

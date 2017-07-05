@@ -17,28 +17,30 @@
                             <div id="gap{{ counter }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
                             {% set counter = counter + 1 %}
                         {% else %}
-                            <span>{{ word }}</span>                             
+                            <span>{{ word|raw }}</span>                             
                         {% endif %}
                     {% endfor %}
                 </div>
                 <div class="voffset5">
-                    <a id="submit-result" class="btn btn-default disabled" href="{{ path('homepage') }}" role="button">Submit &raquo;</a>
+                    <a id="submit-result" class="btn btn-default disabled" href="{{ path('thank_you') }}" role="button">Submit &raquo;</a>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div id="words">
+            <div class="col-md-4">
+                
+                <div data-spy="affix" id="words">
                     {% set counter = 0 %}
-                    {% for word in text|shuffle %}
+                    {% for word in text %}
                         {% if word starts with "[" %}
                             <div id="word{{ counter }}" ondragstart="drag(event)" 
                                  class="filler filler-in-list" draggable="true">{{ word[1:-1] }}</div>
                             {% set counter = counter + 1 %}
                         {% endif %}                    
-                    {% endfor %}                                    
+                    {% endfor %}          
                 </div>
+                
                 <script>
                     var no_gaps = {{ counter }};
-                    var filled_gaps = 0;
+                    var filled_gaps = 0;                    
                 </script>
                 
             </div>
