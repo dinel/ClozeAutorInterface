@@ -1,21 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div class="row"><div class="col-md-8 col-md-offset-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
                 <div id="welcome">
-                    <h1>Welcome</h1>
+                    <h1>Welcome to our Cloze test</h1>
                 </div>
 
                 <div>
                     <h2>What's this?</h2>
-                    <p>
-                        Here goes a description of the project. 
-                    </p>
-                    <p class="text-center"><a class="btn btn-default" href="{{ path('homepage') }}" role="button">I am interested to take part &raquo;</a></p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam non magna vitae leo pharetra hendrerit et id dui. Curabitur ultrices pretium dapibus. Praesent porta sed eros eget iaculis. Proin pretium diam orci, vitae bibendum nulla vehicula id. Ut ultricies velit et efficitur ornare. Donec tristique sem id justo volutpat, ut elementum nisi commodo. Aenean et aliquet libero. Quisque blandit ante et vulputate venenatis.</p>
+                    <p>Nam pellentesque ullamcorper rhoncus. Etiam finibus quis nunc eget feugiat. Nulla sed risus risus. Proin dictum augue diam, sodales auctor ex malesuada sit amet. Mauris velit lorem, pulvinar in nibh sed, cursus eleifend tortor. Phasellus vitae arcu rhoncus, imperdiet velit quis, mattis justo. Sed id ultricies turpis. Pellentesque auctor efficitur dictum. Praesent imperdiet ut quam nec lacinia. Nulla vestibulum nibh felis, in lobortis diam convallis a.</p>
+                    <p>Pellentesque at nisi hendrerit, efficitur magna nec, tempor turpis. Curabitur ultricies iaculis massa. Vivamus euismod metus euismod, tempus risus id, rhoncus erat. Sed diam magna, aliquet non nibh eget, condimentum fermentum justo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus vitae lobortis massa. Maecenas tristique mattis ultrices. Quisque elit sem, mattis id dolor id, bibendum feugiat metus. Quisque dictum tellus vitae dapibus ultricies. In maximus auctor orci a sollicitudin. Integer sodales elementum tincidunt. Praesent porttitor, nisl in varius pharetra, diam sem convallis lectus, a viverra nisl erat quis lorem.</p>                    
                 </div>
-            </div></div>
+            
+                <div class="voffset5">
+                    <p class="text-center"><a class="btn btn-default" href="{{ path('confirm_interest') }}" role="button">I am interested to take part &raquo;</a></p>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
