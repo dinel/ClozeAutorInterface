@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+var saveClicked = false;
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -39,5 +41,15 @@ $( document ).ready(function() {
         if(filled_gaps !== no_gaps) {
             $('#submit-result').addClass("disabled");
         }
-    });    
+    });
+    
+    $(window).bind('beforeunload', function(){
+        if(! saveClicked) {
+            return 'Your work is not saved. Are you sure you want to continue?';
+        }
+    });
+    
+    $('#submit-result').click(function() {
+        saveClicked = true;
+    });
 });
