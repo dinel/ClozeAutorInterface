@@ -54,6 +54,7 @@ $( document ).ready(function() {
         idGap = $(this).attr('id');
         
         updateLog("Remove " + idWord + " from " + idGap);
+        $("#words").shuffleChildren();
     });
     
     $(window).bind('beforeunload', function(){
