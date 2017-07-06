@@ -48,7 +48,8 @@ and open the template in the editor.
 }
 
 #words {
-    height: 200px;
+    height: 95vh;
     padding-top:20px;
     padding-left: 3em;
+    overflow-y: auto;
 }
