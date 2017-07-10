@@ -154,23 +154,44 @@ class DefaultController extends Controller
         $session = $request->getSession();
         $text = explode(" ", str_replace("\n", "<br>", $session->get("text")));
         
-        if($request->request->get("operations")) {
+        if($request->request->get("operations")) {            
             $operations  = $request->request->get("operations");
-        } else {
+            echo "POST:" . $operations . "<br>";
+        } else {            
             $operations = $session->get("operations");
+            echo "SESSION" . $operations . "<br>";
         }
-        preg_match_all("/:M:word([0-9]+):gap([0-9]+)/", $operations, $matches, PREG_SET_ORDER);
-        $correct = array();
-        foreach($matches as $val) {
-            if($val[1] === $val[2]) {
-                $correct[] = True;
-            } else {
-                $correct[] = False;
+        
+        print_r($text);
+        echo("<br><br>");
+        
+        // collect the gaps
+        $gaps = array();
+        foreach($text as $word) {
+            if(strlen(trim($word)) === 0) {
+                continue;
+            }
+                
+            if($word[0] == "[") {
+                $gaps[] = substr($word, 1, strlen($word) - 2);
             }
         }
         
+        print_r($gaps);
+        echo("<br><br>");
+        
+        preg_match_all("/:M:word([0-9]+):gap([0-9]+)/", $operations, $matches, PREG_SET_ORDER);
+        $filled = array();
+        foreach($matches as $val) {
+            $filled[(int)$val[2]] = (int)$val[1];
+        }
+        
+        print_r($filled);
+        echo("<br><br>");
+        
         // recreate the text
         $the_text = "";
+        $the_correct_text = "";
         $counter = 0;
         foreach($text as $word) {
             if(strlen(trim($word)) === 0) {
@@ -178,21 +199,34 @@ class DefaultController extends Controller
             }
                 
             if($word[0] == "[") {
-                if($correct[$counter]) {
-                    $the_text .= (" " . substr($word, 1, strlen($word) - 2) . " ");
+                if($filled[$counter] === $counter) {
+                    $the_text .= (" [" . substr($word, 1, strlen($word) - 2) . "] ");
+                    $the_correct_text .= (" " . substr($word, 1, strlen($word) - 2) . " ");
                 } else {
-                    $the_text .= (" " . $word . " ");
+                    $the_text .= (" [" . $gaps[$filled[$counter]] . "] ");
+                    $the_correct_text .= (" " . $word . " ");
                 }
                 $counter++;
             } else {
                 $the_text .= (" " . $word . " ");
+                $the_correct_text .= (" " . $word . " ");
             }
         }
-        $session->set("text", preg_replace('/\s+/', ' ', $the_text));
+        $session->set("text", preg_replace('/\s+/', ' ', $the_correct_text));
+        $text_new = explode(" ", str_replace("\n", "<br>", 
+                preg_replace('/\s+/', ' ', $the_text)));
+        
+        print_r($text_new);
+        echo("<br><br>");
+        
+        print_r($the_correct_text);
+        echo("<br><br>");
         
         return $this->render("default/feedback.html.twig", array(
-                    "correct" => $correct,
-                    "text" => $text,
+                    "filled" => $filled,
+                    "text" => $text_new,
+                    //"the_correct_text" => explode(" ", str_replace("\n", "<br>", $the_correct_text)
+                    "the_correct_text" => $text,
         ));
     }
 }

@@ -14,7 +14,7 @@
                     {% for word in text %}
                         {% if word starts with "[" %}
                             <span class="answer 
-                            {% if correct[counter] %}
+                            {% if filled[counter] == counter %}
                                 correct-answer
                             {% else %}
                                 wrong-answer
@@ -34,12 +34,14 @@
                 <div class="voffset4" id="text">
                     <h3>Try to fill in the gaps using the words from the right</h3>
                     {% set counter = 0 %}
+                    {% set no_gaps = 0 %}
                     {% for word in text %}
                         {% if word starts with "[" %}
-                            {% if correct[counter] %}
+                            {% if filled[counter] == counter %}
                                 <span>{{ word[1:-1]|raw }}</span>
                             {% else %}
-                                <div id="gap{{ counter }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
+                                <div id="gap{{ no_gaps }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
+                                {% set no_gaps = no_gaps + 1 %}
                             {% endif %}
                             {% set counter = counter + 1 %}
                         {% else %}
@@ -56,10 +58,10 @@
                 <div data-spy="affix" id="words">
                     {% set counter = 0 %}
                     {% set no_gaps = 0 %}
-                    {% for word in text %}
+                    {% for word in the_correct_text %}
                         {% if word starts with "[" %}
-                            {% if not correct[counter] %}
-                                <div id="word{{ counter }}" ondragstart="drag(event)" 
+                            {% if filled[counter] != counter %}
+                                <div id="word{{ no_gaps }}" ondragstart="drag(event)" 
                                         class="filler filler-in-list" draggable="true">{{ word[1:-1] }}</div>
                                 {% set no_gaps = no_gaps + 1 %}
                             {% endif %}
