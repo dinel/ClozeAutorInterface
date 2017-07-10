@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -113,8 +115,9 @@ class DefaultController extends Controller
         $session = $request->getSession();
         if($session->get("state") === "text") {
             
-            $participant = $session->get("participant");
-            $text = explode(" ", str_replace("\n", "<br>", $participant->getText()));
+            $participant = $session->get("participant");            
+            $session->set("text", $participant->getText());
+            $text = explode(" ", str_replace("\n", "<br>", $participant->getText()));            
             return $this->render('default/text.html.twig', [ 
                 "text" => $text,
             ]);
@@ -126,16 +129,70 @@ class DefaultController extends Controller
     
     /**
      * @Route("/thank-you", name="thank_you")
+     * @Method({"POST"})
      */
     public function thankYouAction(Request $request) {
         $session = $request->getSession();        
         
-        if($session->get("state") === "text") {
-            $session->invalidate();
-            return $this->render('default/thankyou.html.twig');
+        if($session->get("state") === "text") {            
+            $operations  = $request->request->get("operations");
+            $session->set("operations", $operations);
+            return $this->render('default/thankyou.html.twig', array(
+                        "operations" => $operations,
+                    ));
         } else {
             $session->set("state", "welcome");
             return $this->redirectToRoute("homepage");
         }                
+    }
+    
+    /**
+     * @Route("/feedback", name="feedback")
+     * @Method({"GET", "POST"})
+     */
+    public function feedbackAction(Request $request) {
+        $session = $request->getSession();
+        $text = explode(" ", str_replace("\n", "<br>", $session->get("text")));
+        
+        if($request->request->get("operations")) {
+            $operations  = $request->request->get("operations");
+        } else {
+            $operations = $session->get("operations");
+        }
+        preg_match_all("/:M:word([0-9]+):gap([0-9]+)/", $operations, $matches, PREG_SET_ORDER);
+        $correct = array();
+        foreach($matches as $val) {
+            if($val[1] === $val[2]) {
+                $correct[] = True;
+            } else {
+                $correct[] = False;
+            }
+        }
+        
+        // recreate the text
+        $the_text = "";
+        $counter = 0;
+        foreach($text as $word) {
+            if(strlen(trim($word)) === 0) {
+                continue;
+            }
+                
+            if($word[0] == "[") {
+                if($correct[$counter]) {
+                    $the_text .= (" " . substr($word, 1, strlen($word) - 2) . " ");
+                } else {
+                    $the_text .= (" " . $word . " ");
+                }
+                $counter++;
+            } else {
+                $the_text .= (" " . $word . " ");
+            }
+        }
+        $session->set("text", preg_replace('/\s+/', ' ', $the_text));
+        
+        return $this->render("default/feedback.html.twig", array(
+                    "correct" => $correct,
+                    "text" => $text,
+        ));
     }
 }

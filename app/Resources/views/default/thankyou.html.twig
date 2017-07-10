@@ -5,7 +5,14 @@
         <div class="row voffset4">
             <div class="col-md-8">
                     <h1>Thank you for your participation</h1>
+                    
+                    {{ dump(operations) }}
             </div>
+            <div>
+                <a class="btn btn-default" href="{{ path('feedback') }}" role="button">
+                    How well did I do?</a>
+            </div>
+                
         </div>
     </div>
 {% endblock %}

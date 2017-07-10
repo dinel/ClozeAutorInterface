@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* global filled_gaps, no_gaps */
+/* global filled_gaps, no_gaps, redirection */
 
 var saveClicked = false;
 var operations = "";
@@ -39,6 +39,10 @@ function drop(ev) {
 $( document ).ready(function() {
     $("#words").shuffleChildren();
     updateLog("Opened text");
+    
+    if(redirection === "feedback") {
+        show_results();
+    }
     
     $('#text').on('click', '.filled-gap', function() {
         $(this).addClass('gap');
@@ -79,7 +83,11 @@ $( document ).ready(function() {
         
         var params = [];
         params["operations"] = operations;
-        post("/thank-you", params, "post");
+        post("/" + redirection, params, "post");
+    });
+    
+    $('#try-again').click( function() {
+        show_exercise();
     });
 });
 
@@ -90,6 +98,18 @@ function updateLog(s) {
     operations += "[" + d.getHours() + ":" + d.getMinutes() 
             + ":" + d.getSeconds() + ":" + s + "]";
     console.log(operations);
+}
+
+function show_results() {
+    $('#results').show();
+    $('#text').hide();
+    $('#words').hide();
+}
+
+function show_exercise() {
+    $('#results').hide();
+    $('#text').show();
+    $('#words').show();
 }
 
 /* Inspired from https://css-tricks.com/snippets/jquery/shuffle-children/ */

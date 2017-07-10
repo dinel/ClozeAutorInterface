@@ -16,6 +16,25 @@ and open the template in the editor.
 .voffset5 { margin-top: 150px; }
 
 body {
-    font-size: 16px;
+    font-size: 20px;
     padding-bottom: 100px;
+}
+
+.answer {
+    padding-right: 20px;
+    margin-right: 0.25em;
+}
+
+.correct-answer {
+    background-image: url("check.png");
+    background-size: 1em 1em;
+    background-repeat: no-repeat;
+    background-position: right top;
+}
+
+.wrong-answer {
+    background-image: url("alert.png");
+    background-size: 1em 1em;
+    background-repeat: no-repeat;
+    background-position: right top;
 }
