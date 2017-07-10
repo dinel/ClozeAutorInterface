@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+/* global filled_gaps, no_gaps */
+
 var saveClicked = false;
 var operations = "";
 
@@ -31,7 +33,7 @@ function drop(ev) {
     
     idGap = ev.target.id;
     
-    updateLog("Moving " + idWord + " to gap " + idGap);
+    updateLog("M:" + idWord + ":" + idGap);
 }
 
 $( document ).ready(function() {
@@ -53,7 +55,7 @@ $( document ).ready(function() {
                 
         idGap = $(this).attr('id');
         
-        updateLog("Remove " + idWord + " from " + idGap);
+        updateLog("R:" + idWord + ":" + idGap);
         $("#words").shuffleChildren();
     });
     
@@ -64,16 +66,20 @@ $( document ).ready(function() {
     });
     
     $(window).blur(function() {
-        updateLog("Changed window");
+        updateLog("Changed");
     });
     
     $(window).focus(function() {
-        updateLog("Switched back");
+        updateLog("Back");
     });
     
     $('#submit-result').click(function() {
         saveClicked = true;
-        updateLog("Submitted solution");
+        updateLog("Submit");
+        
+        var params = [];
+        params["operations"] = operations;
+        post("/thank-you", params, "post");
     });
 });
 
@@ -81,6 +87,9 @@ function updateLog(s) {
     var d = new Date();
     console.log("At " + d.getHours() + ":" + d.getMinutes() 
             + ":" + d.getSeconds() + ":" + s);
+    operations += "[" + d.getHours() + ":" + d.getMinutes() 
+            + ":" + d.getSeconds() + ":" + s + "]";
+    console.log(operations);
 }
 
 /* Inspired from https://css-tricks.com/snippets/jquery/shuffle-children/ */
@@ -89,7 +98,7 @@ $.fn.shuffleChildren = function() {
         var $el = $(el);
         var $find = $el.children();
 
-        /*
+        /* For random order
         $find.sort(function() {
             return 0.5 - Math.random();
         });
@@ -105,3 +114,30 @@ $.fn.shuffleChildren = function() {
         $find.appendTo($el);
     });
 };
+
+/**
+ * From https://stackoverflow.com/questions/133925/javascript-post-request-like-a-form-submit/5533477
+ */
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
