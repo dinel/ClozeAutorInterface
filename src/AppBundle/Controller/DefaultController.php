@@ -113,11 +113,12 @@ class DefaultController extends Controller
      */
     public function displayTextAction(Request $request) {
         $session = $request->getSession();
-        if($session->get("state") === "text") {
-            
+        if($session->get("state") === "text") {            
             $participant = $session->get("participant");            
-            $session->set("text", $participant->getText());
-            $text = explode(" ", str_replace("\n", "<br>", $participant->getText()));            
+            
+            $text = $this->processText($participant->getText());
+            $session->set("text", $text);
+            
             return $this->render('default/text.html.twig', [ 
                 "text" => $text,
             ]);
@@ -152,81 +153,78 @@ class DefaultController extends Controller
      */
     public function feedbackAction(Request $request) {
         $session = $request->getSession();
-        $text = explode(" ", str_replace("\n", "<br>", $session->get("text")));
+        $text = $session->get("text");
         
         if($request->request->get("operations")) {            
             $operations  = $request->request->get("operations");
-            echo "POST:" . $operations . "<br>";
         } else {            
             $operations = $session->get("operations");
-            echo "SESSION" . $operations . "<br>";
         }
         
-        print_r($text);
-        echo("<br><br>");
-        
-        // collect the gaps
-        $gaps = array();
-        foreach($text as $word) {
-            if(strlen(trim($word)) === 0) {
-                continue;
+        // find offsets
+        $counter = 0;
+        $offsets = array();
+        foreach($text as $block) {
+            if($block[0] === 1) {
+                $offsets[] = $counter;
             }
-                
-            if($word[0] == "[") {
-                $gaps[] = substr($word, 1, strlen($word) - 2);
-            }
+            $counter++;
         }
-        
-        print_r($gaps);
-        echo("<br><br>");
         
         preg_match_all("/:M:word([0-9]+):gap([0-9]+)/", $operations, $matches, PREG_SET_ORDER);
         $filled = array();
         foreach($matches as $val) {
             $filled[(int)$val[2]] = (int)$val[1];
         }
-        
-        print_r($filled);
-        echo("<br><br>");
-        
-        // recreate the text
-        $the_text = "";
-        $the_correct_text = "";
-        $counter = 0;
-        foreach($text as $word) {
-            if(strlen(trim($word)) === 0) {
-                continue;
-            }
                 
-            if($word[0] == "[") {
-                if($filled[$counter] === $counter) {
-                    $the_text .= (" [" . substr($word, 1, strlen($word) - 2) . "] ");
-                    $the_correct_text .= (" " . substr($word, 1, strlen($word) - 2) . " ");
+        $counter = 0;
+        foreach($text as &$block) {
+            if($block[0] === 1) {
+                if($block[2] === 1) {
+                    ;
+                } elseif($filled[$counter] === $counter) {
+                    $block[2] = 1; //correct
                 } else {
-                    $the_text .= (" [" . $gaps[$filled[$counter]] . "] ");
-                    $the_correct_text .= (" " . $word . " ");
+                    $block[2] = 2; //incorrect
+                    $block[3] = $text[$offsets[$filled[$counter]]][1];
                 }
                 $counter++;
-            } else {
-                $the_text .= (" " . $word . " ");
-                $the_correct_text .= (" " . $word . " ");
             }
         }
-        $session->set("text", preg_replace('/\s+/', ' ', $the_correct_text));
-        $text_new = explode(" ", str_replace("\n", "<br>", 
-                preg_replace('/\s+/', ' ', $the_text)));
         
-        print_r($text_new);
-        echo("<br><br>");
-        
-        print_r($the_correct_text);
-        echo("<br><br>");
+        $session->set("text", $text);                
         
         return $this->render("default/feedback.html.twig", array(
-                    "filled" => $filled,
-                    "text" => $text_new,
-                    //"the_correct_text" => explode(" ", str_replace("\n", "<br>", $the_correct_text)
-                    "the_correct_text" => $text,
+                    "text" => $text,
         ));
     }
+    
+    /************************************************
+     * Private methods
+     ************************************************/    
+    private function processText($text) {
+        /* Structure for each element
+         * 0: type 0=text, 1=gap
+         * 1: the actual text
+         * 2: status 0=not filled, 1=correct, 2=incorrect
+         * 3: offset of the filler
+         */
+        $blocks = array();        
+    
+        foreach (explode("\n", $text) as $line) {                
+            while(preg_match("/^([^\[]*)\[([^\]]+)\](.*)/", $line, $matches)) {
+                if(strlen(trim($matches[1])) > 0) {
+                    $blocks[] = array(0, trim($matches[1]));
+                }
+                
+                $blocks[] = array(1, $matches[2], 0);
+                $line = $matches[3];
+            }
+            $line .= "<br>";
+            $blocks[] = array(0, $line);
+        }
+        
+        return $blocks;
+    }
+    
 }

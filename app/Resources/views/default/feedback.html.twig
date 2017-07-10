@@ -11,18 +11,17 @@
             <div class="col-md-8">                                                
                 <div class="voffset4" id="results">
                     {% set counter = 0 %}
-                    {% for word in text %}
-                        {% if word starts with "[" %}
+                    {% for word in text %}                        
+                        {% if word[0] == 1 %}
                             <span class="answer 
-                            {% if filled[counter] == counter %}
-                                correct-answer
+                            {% if word[2] == 1 %} %}
+                                correct-answer">{{ word[1]|raw }}
                             {% else %}
-                                wrong-answer
+                                wrong-answer">{{ word[3]|raw }}
                             {% endif %}
-                                ">{{ word[1:-1]|raw }}</span>
-                            {% set counter = counter + 1 %}
+                            </span>
                         {% else %}
-                            <span>{{ word|raw }}</span>
+                            <span>{{ word[1]|raw }}</span>
                         {% endif %}
                     {% endfor %}
                     
@@ -34,18 +33,16 @@
                 <div class="voffset4" id="text">
                     <h3>Try to fill in the gaps using the words from the right</h3>
                     {% set counter = 0 %}
-                    {% set no_gaps = 0 %}
                     {% for word in text %}
-                        {% if word starts with "[" %}
-                            {% if filled[counter] == counter %}
-                                <span>{{ word[1:-1]|raw }}</span>
+                        {% if word[0] == 1 %}
+                            {% if word[2] == 1 %}
+                                <span>{{ word[1]|raw }}</span>
                             {% else %}
-                                <div id="gap{{ no_gaps }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
-                                {% set no_gaps = no_gaps + 1 %}
+                                <div id="gap{{ counter }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
                             {% endif %}
                             {% set counter = counter + 1 %}
                         {% else %}
-                            <span>{{ word|raw }}</span>                             
+                            <span>{{ word[1]|raw }}</span>                             
                         {% endif %}
                     {% endfor %}
                 
@@ -58,11 +55,11 @@
                 <div data-spy="affix" id="words">
                     {% set counter = 0 %}
                     {% set no_gaps = 0 %}
-                    {% for word in the_correct_text %}
-                        {% if word starts with "[" %}
-                            {% if filled[counter] != counter %}
-                                <div id="word{{ no_gaps }}" ondragstart="drag(event)" 
-                                        class="filler filler-in-list" draggable="true">{{ word[1:-1] }}</div>
+                    {% for word in text %}
+                        {% if word[0] == 1 %}
+                            {% if word[2] == 2 %}
+                                <div id="word{{ counter }}" ondragstart="drag(event)" 
+                                        class="filler filler-in-list" draggable="true">{{ word[1] }}</div>
                                 {% set no_gaps = no_gaps + 1 %}
                             {% endif %}
                             {% set counter = counter + 1 %}
