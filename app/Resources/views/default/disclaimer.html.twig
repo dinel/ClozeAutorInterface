@@ -5,21 +5,89 @@
         <div class="row">
             <div class="col-md-8">
                 <div id="welcome">
-                    <h1>Disclaimer</h1>
+                    <h1>Participant consent form</h1>
                 </div>
 
                 <div>
                     <h2>Please read and agree with the following</h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam non magna vitae leo pharetra hendrerit et id dui. Curabitur ultrices pretium dapibus. Praesent porta sed eros eget iaculis. Proin pretium diam orci, vitae bibendum nulla vehicula id. Ut ultricies velit et efficitur ornare. Donec tristique sem id justo volutpat, ut elementum nisi commodo. Aenean et aliquet libero. Quisque blandit ante et vulputate venenatis.</p>
-                    <p>Nam pellentesque ullamcorper rhoncus. Etiam finibus quis nunc eget feugiat. Nulla sed risus risus. Proin dictum augue diam, sodales auctor ex malesuada sit amet. Mauris velit lorem, pulvinar in nibh sed, cursus eleifend tortor. Phasellus vitae arcu rhoncus, imperdiet velit quis, mattis justo. Sed id ultricies turpis. Pellentesque auctor efficitur dictum. Praesent imperdiet ut quam nec lacinia. Nulla vestibulum nibh felis, in lobortis diam convallis a.</p>
-                    <p>Pellentesque at nisi hendrerit, efficitur magna nec, tempor turpis. Curabitur ultricies iaculis massa. Vivamus euismod metus euismod, tempus risus id, rhoncus erat. Sed diam magna, aliquet non nibh eget, condimentum fermentum justo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Phasellus vitae lobortis massa. Maecenas tristique mattis ultrices. Quisque elit sem, mattis id dolor id, bibendum feugiat metus. Quisque dictum tellus vitae dapibus ultricies. In maximus auctor orci a sollicitudin. Integer sodales elementum tincidunt. Praesent porttitor, nisl in varius pharetra, diam sem convallis lectus, a viverra nisl erat quis lorem.</p>                    
                 </div>
-                
-                <div class="voffset5">
-                    <p class="text-center">
-                        <a class="btn btn-default" href="{{ path('confirm_participation') }}" role="button">I understand and I agree with this &raquo;</a>
-                    </p>
-                </div>
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I have read and understood the explanation of the study. 
+            </div>
+            <div class="col-md-2">                    
+                        <input type="radio" name="study">Yes
+                        <input type="radio" name="study">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I have had the opportunity to ask questions about the research.
+            </div>
+            <div class="col-md-2">                    
+                <input type="radio" name="questions">Yes
+                <input type="radio" name="questions">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I understand that I am free to withdraw from the study at any time
+prior to the submission of this work for publication without 
+giving any reason and without any negative consequences. 
+If I decide to withdraw from the research process any information
+ I have given to the researcher will be destroyed and none of my 
+responses will be included in the research.                        
+            </div>
+            <div class="col-md-2">                    
+                        <input type="radio" name="withdraw">Yes
+                        <input type="radio" name="withdraw">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+I understand that if I agree to take part in this research I
+am agreeing to take part in a reading test, 
+which involves reading text samples and answering 
+questions related to the content of the texts.
+            </div>
+            <div class="col-md-2">
+                        <input type="radio" name="research">Yes
+                        <input type="radio" name="research">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I understand that any identifiable data will be anonymised and I give
+permission for the research team to have access to my anonymised data                        
+            </div>
+            <div class="col-md-2">                    
+                <input type="radio" name="anon">Yes
+                <input type="radio" name="anon">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I agree to take part in this research study
+            </div>
+            <div class="col-md-2">                    
+                <input type="radio" name="agree">Yes
+                <input type="radio" name="agree">No
+            </div>
+        </div>
+        
+        <div class="voffset5 row">
+            <div class="col-md-8">
+                <p class="text-center">
+                    <a class="btn btn-default" href="{{ path('confirm_participation') }}" role="button">I understand and I agree with this &raquo;</a>
+                </p>
             </div>
         </div>
     </div>
