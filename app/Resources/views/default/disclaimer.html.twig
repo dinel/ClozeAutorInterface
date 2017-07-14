@@ -86,9 +86,16 @@ permission for the research team to have access to my anonymised data
         <div class="voffset5 row">
             <div class="col-md-8">
                 <p class="text-center">
-                    <a class="btn btn-default" href="{{ path('confirm_participation') }}" role="button">I understand and I agree with this &raquo;</a>
+                    <a id="confirm" class="btn btn-default disabled" href="{{ path('confirm_participation') }}" role="button">
+                        I understand and I agree with this &raquo;
+                    </a>
                 </p>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/disclaimer.js') }}"></script>
 {% endblock %}
