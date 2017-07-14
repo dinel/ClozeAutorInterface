@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div id="welcome">
+                    <h1>What is your age?</h1>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-8">
+                <div class="centre-text">
+                    <a class="btn btn-default" style="margin: 3em;" href="{{ path('agree_conditions', {'age':'under'}) }}" role="button">I am under 18 and I can get the permission of a parent</a>
+                    <a class="btn btn-default" style="margin: 3em;" href="{{ path('agree_conditions', {'age':'over'})  }}" role="button">I am over 18</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

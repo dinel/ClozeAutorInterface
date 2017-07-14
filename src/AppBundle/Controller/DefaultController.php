@@ -30,15 +30,20 @@ class DefaultController extends Controller
             $session->set("state", "welcome");
         }
             
-        switch ($session->get("state")) {                
-            case "disclaimer":
+        switch ($session->get("state")) {
+            case "confirm_age":
+                return $this->render('default/confirm_age.html.twig', [ ]);
+                
+            case "agree_under":
+                return $this->render('default/disclaimer.html.twig', [ ]);
+                
+            case "agree_over":
                 return $this->render('default/disclaimer.html.twig', [ ]);
                 
             case "survey":                
                 return $this->render('default/survey.html.twig', [ ]);
                 
-            case "thankyou":
-                
+            case "thankyou":                
                 return $this->render('default/thankyou.html.twig', [ ]);                
                 
             default:                
@@ -52,7 +57,7 @@ class DefaultController extends Controller
     public function confirmInterestAction(Request $request) {
         $session = $request->getSession();
         if($session->get("state") === "welcome") {
-            $session->set("state", "disclaimer");
+            $session->set("state", "confirm_age");
         } else {
             $session->set("state", "welcome");
         }
@@ -61,19 +66,48 @@ class DefaultController extends Controller
     }
     
     /**
+     * @Route("/confirm_age", name="confirm_age")
+     */
+    public function confirmAgeAction(Request $request) {
+        $session = $request->getSession();
+        if($session->get("state") === "welcome") {
+            $session->set("state", "confirm_age");
+        } else {
+            $session->set("state", "welcome");
+        }
+        
+        return $this->redirectToRoute("homepage");
+    }
+    
+    /**
+     * @Route("/agree_conditions/{age}", name="agree_conditions")
+     */
+    public function agreeConditionsAction(Request $request, $age) {
+        $session = $request->getSession();
+        if($session->get("state") === "confirm_age") {
+            $session->set("age_agree", $age);            
+            $session->set("state", "agree_" . $age);
+        } else {
+            $session->set("state", "welcome");            
+        }
+        
+        return $this->redirectToRoute("homepage");
+    }    
+    
+    /**
      * @Route("/confirm_participation", name="confirm_participation")
      */
     public function confirmParticipationAction(Request $request) {
         $session = $request->getSession();
-        if($session->get("state") === "disclaimer") {
+        if($session->get("state") === "agree_over" || $session->get("state") === "agree_under") {
             $session->set("state", "survey");
             return $this->redirectToRoute("questionnaire");
         } else {
             $session->set("state", "welcome");
             return $this->redirectToRoute("homepage");
         }                
-    }    
-    
+    } 
+        
     /**
      * @Route("/questionnaire", name="questionnaire")
      */
