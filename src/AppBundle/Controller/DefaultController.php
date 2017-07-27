@@ -9,8 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Form\ParticipantType;
 
 class DefaultController extends Controller
 {
@@ -38,10 +37,7 @@ class DefaultController extends Controller
                 return $this->render('default/disclaimer.html.twig', [ ]);
                 
             case "agree_over":
-                return $this->render('default/disclaimer.html.twig', [ ]);
-                
-            case "survey":                
-                return $this->render('default/survey.html.twig', [ ]);
+                return $this->render('default/disclaimer.html.twig', [ ]);                
                 
             case "thankyou":                
                 return $this->render('default/thankyou.html.twig', [ ]);                
@@ -115,13 +111,7 @@ class DefaultController extends Controller
         $session = $request->getSession();
         if($session->get("state") === "survey") {
             $participant = new \AppBundle\Entity\Participant();
-            $form = $this->createFormBuilder($participant)
-                    ->add('text', TextareaType::class, array(
-                        'attr' => array('cols' => '100', 
-                            'rows' => 10)
-                    ))
-                    ->add('save', SubmitType::class)
-                    ->getForm();
+            $form = $this->createForm(ParticipantType::class, $participant);
             
             $form->handleRequest($request);
             
