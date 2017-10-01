@@ -17,7 +17,6 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ParticipantType extends AbstractType 
@@ -34,12 +33,6 @@ class ParticipantType extends AbstractType
                     'label' => 'Years in formal education (the amount of years '
                                . 'since you first started school until you '
                                . 'finished your education. Gap years should be excluded)',                
-            ))
-            ->add('text', TextareaType::class, array(
-                    'attr' => array(
-                            'cols' => '100', 
-                            'rows' => 10)
-            ))
-            ->add('save', SubmitType::class);
+            ));
     }
 }
