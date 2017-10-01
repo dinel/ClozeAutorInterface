@@ -8,12 +8,25 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Description of Participant
  *
  * @author dinel
  */
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="participant")
+ */
 class Participant {
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     protected $id;
     
     protected $name;
@@ -23,9 +36,16 @@ class Participant {
     protected $age;
     
     protected $years_edu;
-
-    protected $text;
     
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
+    }
+        
     public function getName() {
         return $this->name;
     }
