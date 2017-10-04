@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div id="welcome">
+                    <h1>Parent/Guardian consent form</h1>
+                </div>
+
+                <div>
+                    <h2>Please read and agree with the following</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I have read and understood the attached participant information 	
+leaflet for the above study.
+            </div>
+            <div class="col-md-2">                    
+                        <input type="radio" name="study">Yes
+                        <input type="radio" name="study">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I have had the opportunity to ask questions about the research.
+            </div>
+            <div class="col-md-2">                    
+                <input type="radio" name="questions">Yes
+                <input type="radio" name="questions">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I understand that my son/daughter is free to withdraw from the study at any time
+prior to the submission of this work for publication without 
+giving any reason and without any negative consequences. 
+If my son/daughter decides to withdraw from the research process any information
+ given to the researcher will be destroyed and none of my 
+son/daughter’s responses will be included in the research.                        
+            </div>
+            <div class="col-md-2">                    
+                        <input type="radio" name="withdraw">Yes
+                        <input type="radio" name="withdraw">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+I understand that if I agree for my son/daughter to take part in            
+this research I am agreeing for them to take part in a reading 
+comprehension test, which involves reading text samples and 
+answering comprehension  questions related to the content of the texts.
+            </div>
+            <div class="col-md-2">
+                        <input type="radio" name="research">Yes
+                        <input type="radio" name="research">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+I understand that any identifiable data will be anonymised and I give 	
+permission for the research team to have access to the anonymised data 
+of my child.                 
+            </div>
+            <div class="col-md-2">                    
+                <input type="radio" name="anon">Yes
+                <input type="radio" name="anon">No
+            </div>
+        </div>
+        
+        <div class="voffset3 row">
+            <div class="col-md-6">                    
+                I agree to my child taking part in this research study 
+            </div>
+            <div class="col-md-2">                    
+                <input type="radio" name="agree">Yes
+                <input type="radio" name="agree">No
+            </div>
+        </div>
+        
+        <div class="voffset5 row">
+            <div class="col-md-8">
+                <p class="text-center">
+                    <a id="confirm" class="btn btn-default disabled" href="{{ path('next') }}" role="button">
+                        I understand and I agree with this &raquo;
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/disclaimer.js') }}"></script>
+{% endblock %}
