@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/survey.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="text-center">Demographic Questionnaire</h2>
+                    {{ form_start(form) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.email) }}
+                    {{ form_row(form.age) }}
+                    {{ form_row(form.years_edu) }}
+            </div>
+        </div>
+            
+        <div class="form-group">
+        <div class="row">
+            <div class="col-md-8"><strong>Have you been diagnosed with any of the following?</strong></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">Autism Spectrum Disorder: </div>
+            <div class="col-md-2 text-right">
+                <input type="radio" name="asd" value="yes">Yes
+                <input type="radio" name="asd" value="no">No
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-md-6">Dyslexia: </div>
+            <div class="col-md-2 text-right">
+                <input type="radio" name="dys" value="yes">Yes
+                <input type="radio" name="dys" value="no">No
+            </div>
+        </div>
+            
+            
+        <div class="row">
+            <div class="col-md-6">Aphasia:</div>
+            <div class="col-md-2 text-right">
+                <input type="radio" name="aph" value="yes">Yes
+                <input type="radio" name="aph" value="no">No
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-md-8">
+                    Other conditions affecting reading (please specify)
+                    <div><input id="other-conditions" type="text" name="other" class="form-control"></div>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-md-8">
+                    If you have answered YES to any of these, please specify when 
+                    you received your formal diagnosis:
+                    <div><input id="diag-date" type="text" name="diag-date" class="form-control"></div>
+            </div>
+        </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-md-6"><strong>Is English your native language?</strong></div>
+            <div class="col-md-2 text-right">
+                <input type="radio" name="en_nat" value="yes">Yes
+                <input type="radio" name="en_nat" value="no">No
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-md-6"><strong>Do you speak other languages?</strong></div>
+            <div class="col-md-2 text-right">
+                <input id="other_lang_yes" type="radio" name="other_lang">Yes
+                <input id="other_lang_no" type="radio" name="other_lang">No
+            </div>
+        </div>
+            
+        <div class="row" id="lang-known-container">
+            <div class="col-md-8 form-inline">
+                <strong>Other language(s) spoken: </strong><span id='list-langs'></span><br/>
+                <input class="form-control" type="text" id="language_spoken" placeholder="Language">
+                <select class="form-control" id='level' name="level">
+                    <option value="Level of fluency" disabled selected>Level of fluency</option>
+                    <option value="Native">Native</option>
+                    <option value="Fluent">Fluent</option>
+                    <option value="Advanced">Advanced</option>                    
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Beginner">Beginner</option>
+                </select>
+                <a id="add-language" class="btn btn-default disabled" role="button">Add to list of languages spoken</a>
+                
+                <br/><br/>                  
+            </div>            
+        </div>
+            
+        <div class="row">
+            <div class="col-md-6">
+                <strong>Do you normally read books in your free time?</strong>
+            </div>
+            <div class="col-md-2 text-right">
+                <input id="read_yes" type="radio" name="read">Yes
+                <input id="read_no" type="radio" name="read">No
+            </div>
+        </div>
+            
+        <div class="row" id="reading-container">
+            <div class="col-md-8 form-inline">
+                If you have answered YES, please specify how often you read books: 
+                <select class="form-control" id='freq' name="freq">                   
+                    <option value="Daily">Daily</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Monthly">Monthly</option>                    
+                    <option value="LessMonth">Less than once a month</option>
+                    <option value="LessYear">Less than once a year</option>
+                </select>
+            </div>
+        </div>                     
+                    
+        <div class="row">
+            <div class="col-md-8">
+                    {{ form_widget(form) }}
+                    
+                    <div>
+                        <a id="submit-questionnaire" class="btn btn-default voffset4 disabled" role="button">Submit questionnnaire</a>
+                    </div>
+                    
+                    
+                    {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/survey.js') }}"></script>
+    <script src="{{ asset('js/utils.js') }}"></script>
+    <script src="{{ asset('js/openpgp/openpgp.min.js') }}"></script>
+    <script>
+        var publicKeyString = "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
+"\n" +
+"mQENBFmAWZwBCADKr0/v6TtHB94xYu+RW+ivLxUcLwoDc10BaUT7lfauNa/YveQg\n" +
+"g96N+MiTvFetppbzwXmAQS3RTUXQ7akXLcbMvgI0WZ4mc904pGXu2OEslszWIize\n" +
+"EgtLXkfYifBMxwz0HSzJbSjKd9QCDUrAKUtHC2JWA3LzsQNrZqdqA7T5IrFXthan\n" +
+"wZKkkTOkuuvdO1fvLdE/r4BE5F9zhM7PytXiaaQZTD40ZIhzlYV7nSVCOZHWxTwB\n" +
+"iyU4RHKNcwLIgcNxCkqmkA2ES5DOzoQWHnT/H2kOgwMUgwKSQHcBSwFgBacGxLDm\n" +
+"XJJJU6ySdpAP3ifFXljDgtjp2iy8fu2JubzJABEBAAG0JkNvbnN0YW50aW4gT3Jh\n" +
+"c2FuIDxjLm9yYXNhbkB3bHYuYWMudWs+iQE3BBMBCAAhBQJZgFmcAhsDBQsJCAcC\n" +
+"BhUICQoLAgQWAgMBAh4BAheAAAoJEJeoJMDkmYE2fBkH/RCQsbyggRDk1C5d3Ego\n" +
+"6OECFhMaB6gIAGIpSaCSyTttJ13dX+3fe+cmONZWu4qdUPUIcsydfLdJyO9Mq7Qw\n" +
+"+hzAt5auMnmM7GoGB0ePrjsnhKoIPAMFI9/QmRE76PT1JF9qh/eB0M3qUiUpakvH\n" +
+"beDe4QcgbRdZFOUMYjwrraEgIVfRNY2oGhaT96kTBCX1TXSubeErGhgE1Wv820eb\n" +
+"q3RuMcx4k9ky7T1gcYT5CHKsXSd7+se5EZCry280fh8LCx0+d5MetgOTHO5MkjHo\n" +
+"8aaSIeqf151nZmo4GYlfxTnJpeaj3o6vzfJDE5oQm6q+XGTPJWxj64oD0rYgIQMk\n" +
+"76G5AQ0EWYBZnAEIAMm9Hy0zaeSWCEblfGzgAq3/ra/Ly7VfTL+kTcCkxK5KiHlp\n" +
+"QvlPc0triBl0oRJemZ/hhWdm/BLp3FKVoiUBJPaA+W5r3xleEpUFUFXGFzUnF7t3\n" +
+"OSUKwgbfbPnGk/b8OXzcgWESTvEgsz29t5fcWQbqPvyGJPKEzLk61TUPKVNeSR5g\n" +
+"B/OGOABv65KQngokusFlW5VcAgV7WwtwAAzQwTzs9bLllS1mBj6Lrh42modvSfYL\n" +
+"KvuC9uqv2vnvyIKyaZYESioe8AS8SyWzUggf7MiHFgoSLznfgr+7WnacIX8VbJSh\n" +
+"BuCXei52WaRPCkIvsaKSp6z+rflYFyIZL9UYS4UAEQEAAYkBHwQYAQgACQUCWYBZ\n" +
+"nAIbDAAKCRCXqCTA5JmBNswAB/42o6u3qbJ7DAz9CVvbIlqu/UdvBumy9J2FcBaF\n" +
+"TbzL25QFQO8+W5kAdiA8MZUFjdN0fh8LGmPsS+2dvMIuFmrDk15FnxjVqsmdkjd4\n" +
+"ipcETUzFcAaQ2WffJMWVrkkXJzVPp0Drtg8oy56MoGUupRzUwFmpftXfwE4IrqYh\n" +
+"Mv0be/q5ydBJ9ZoUDyYUK7Fheak0c3xyVbvNgQMdJNcQa0OCkpWAaUktXwpBDruS\n" +
+"re5N46x7SGSS66d5ZnpSAvefSyEjRLMw8rZ4pQNk3xVKLRZ5hwElkEC3SDXSQ5ND\n" +
+"1MDrFYh8HyyK9UzT4tlkl1CN95fcaXTG8f3EsONzCUE4ZZkC\n" +
+"=z2og\n" +
+"-----END PGP PUBLIC KEY BLOCK-----";
+
+openpgp.initWorker({ path:'{{ asset('js/openpgp/openpgp.worker.min.js') }}' });
+//openpgp.config.aead_protect = true;
+                
+    </script>
+{% endblock %}
