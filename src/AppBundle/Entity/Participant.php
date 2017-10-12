@@ -40,6 +40,11 @@ class Participant {
      */
     protected $sequence;
     
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $voucher;
+
     protected $name;
     
     protected $email;
@@ -112,6 +117,15 @@ class Participant {
 
     public function setSequence($sequence) {
         $this->sequence = $sequence;
+        return $this;
+    }
+    
+    public function getVoucher() {
+        return $this->voucher;
+    }
+
+    public function setVoucher($voucher) {
+        $this->voucher = $voucher;
         return $this;
     }
 }
