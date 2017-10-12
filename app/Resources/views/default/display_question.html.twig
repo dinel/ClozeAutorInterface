@@ -1,0 +1,27 @@
+<div class="voffset4">
+    {{ question.text }}<br/>
+    <ul style="list-style: none">
+    {% for answer in question.answers %}
+        <li>
+            <input id="a{{answer.id}}" class="answer" type="checkbox" data-correct="{{question.nocorrectanswers}}" name="q{{question.id}}" value="a{{answer.id}}" />
+            {{ answer.text }}
+        </li>
+    {% endfor %}                        
+    </ul>
+
+    <div id="help-q{{question.id}}">
+    {% if question.nocorrectanswers < 2 %}
+        <em>Select one answer</em>
+    {% else %}
+        <em>Select {{ question.nocorrectanswers }} answers</em>
+    {% endif %}
+    </div>
+
+    <div id="helpchange-q{{question.id}}" style="display:none;">
+    {% if question.nocorrectanswers < 2 %}
+        <em>To change your answer unselect your answer</em>
+    {% else %}
+        <em>To change your answer unselect one of your answers</em>
+    {% endif %}    
+    </div>
+</div>
