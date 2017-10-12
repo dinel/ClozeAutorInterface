@@ -37,14 +37,30 @@ class AppKernel extends Kernel
         return __DIR__;
     }
 
-    public function getCacheDir()
-    {
-        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
-    }
-
+    /**
+     * Method that allows you to set the path for logs
+     * @return string the path to logs
+     */
     public function getLogDir()
     {
-        return dirname(__DIR__).'/var/logs';
+        if("dev" === $this->getEnvironment()) {
+            return "/home/dinel/.cache/symfony/autorcloze/log";            
+        } else {
+            return parent::getLogDir();
+        }
+    }
+    
+    /**
+     * Method that allows you to set the path for cache
+     * @return string the path to cache
+     */
+    public function getCacheDir()
+    {
+        if("dev" === $this->getEnvironment()) {
+            return "/home/dinel/.cache/symfony/autorcloze/cache";
+        } else {
+            return parent::getLogDir();
+        }
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
