@@ -196,7 +196,8 @@ class WorkflowController extends Controller
         $participant = new Participant();
         $participant->setSequence($request->getSession()->get('sequence'));
         $participant->setFinished(0);
-        $em = $this->getDoctrine()->getManager();
+        $participant->setVoucher("undecided");
+        $em = $this->getDoctrine()->getManager();        
         $em->persist($participant);
         $em->flush();
         
