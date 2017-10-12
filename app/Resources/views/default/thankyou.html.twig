@@ -4,15 +4,38 @@
     <div class="container">
         <div class="row voffset4">
             <div class="col-md-8">
-                    <h1>Thank you for your participation</h1>
-                    
-                    {{ dump(operations) }}
-            </div>
-            <div>
-                <a class="btn btn-default" href="{{ path('feedback') }}" role="button">
-                    How well did I do?</a>
-            </div>
+                <h1>Debriefing sheet</h1>
+
+                <p>Thank you very much for taking part in this study. If you would 
+                    like to receive any further information or in case you have any 
+                    concerns, please contact Doctor Victoria Yaneva at 
+                    v.yaneva@wlv.ac.uk or Professor Ruslan Mitkov at r.mitkov@wlv.ac.uk.
+                </p>
+                <p>
+                    In any communication please mention that your ID was {{ participant }}.
+                </p>
                 
+                <div class="voffset4" id="div-voucher">
+                    Please select which type of voucher you would like:
+                    <select id="select-voucher">
+                        <option value="Voucher" disabled selected></option>
+                        <option value="amazon">£10 Amazon voucher</option>
+                        <option value="m&s">£10 Marks and Spencer voucher</option>
+                    </select><br/>
+                    <a id="submit-option" class="btn btn-default disabled" role="button">Submit choice</a>
+                </div>
+                
+                <div class="voffset4" id="div-end" style="display: none;">
+                    Thank you. You can now close your browser.
+                </div>
+                        
+            </div>                
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/thankyou.js') }}"></script>
+    <script src="{{ asset('js/utils.js') }}"></script>
 {% endblock %}
