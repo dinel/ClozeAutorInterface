@@ -29,6 +29,17 @@ class Participant {
      */
     protected $id;
     
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $finished;
+    
+    /**
+     * Defines the sequence of texts assigned to the participant
+     * @ORM\Column(type="string")
+     */
+    protected $sequence;
+    
     protected $name;
     
     protected $email;
@@ -84,5 +95,23 @@ class Participant {
     
     public function setYearsEdu($years_edu) {
         $this->years_edu = $years_edu;
+    }
+    
+    public function getFinished() {
+        return $this->finished;
+    }
+
+    public function getSequence() {
+        return $this->sequence;
+    }
+
+    public function setFinished($finished) {
+        $this->finished = $finished;
+        return $this;
+    }
+
+    public function setSequence($sequence) {
+        $this->sequence = $sequence;
+        return $this;
     }
 }
