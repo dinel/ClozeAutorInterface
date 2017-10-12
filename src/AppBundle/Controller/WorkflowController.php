@@ -155,7 +155,7 @@ class WorkflowController extends Controller
                 
         $workflow = array_merge(
                 ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire'],
-                //$sequences[1], 
+                $sequences[1], 
                 ['subjective_9', 'reviews_10', 'thank_you']);        
         
         $session->set('workflow', $workflow);
