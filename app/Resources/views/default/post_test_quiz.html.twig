@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row voffset4">
+            <div class="col-md-8">
+                <div id="instructions">
+                    <h1>Instructions</h1>
+                    <div>
+                        {{ quiz.instructions }}
+                        <script>
+                            var idQuiz = {{ quiz.id }};
+                        </script>
+                    </div>
+                    <a class="btn btn-default voffset4" id="btn-instructions" role="button">Next</a>
+                </div>
+                
+                {% if quiz %}
+                <div id="prereading" style="display: none;">
+                    <h1>Survey</h1>
+                    {% for question in quiz.questions %}
+                        {% if question.open == 1 %}
+                            {% include 'default/display_open_question.html.twig' with {'question': question } %}
+                        {% else %}
+                            {% include 'default/display_question.html.twig' with {'question': question } %}
+                        {% endif %}
+                    {% endfor %}
+                    <a class="btn btn-default voffset4 disabled" id="btn-prereading" role="button" href="{{ path('next') }}">Next</a>
+                </div>     
+                {% endif %}                    
+            </div>                
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>    
+        var prereading = {% if quiz %}1{% else %}0{% endif %};
+    </script>
+        
+    <script src="{{ asset('js/quiz.js') }}"></script>
+{% endblock %}
