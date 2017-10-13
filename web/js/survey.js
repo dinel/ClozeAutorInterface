@@ -148,8 +148,11 @@ $( document ).ready(function() {
 });
 
 function check_enable() {
-    var sum = enable.reduce((a, b) => a + b, 0);
-    if(sum == 10) {
+    var sum = enable.reduce(function(sum, value) {
+        return sum + value;
+    }, 0);
+    
+    if(sum === 10) {
         $('#submit-questionnaire').removeClass("disabled");
     } 
 }

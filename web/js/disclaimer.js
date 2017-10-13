@@ -11,7 +11,7 @@ $( document ).ready(function() {
 
         for(var i = 0; i < input.length; i++) {
             if(input[i].checked === true) {
-                if(input[i].nextSibling.textContent.startsWith("Yes")) counter++;
+                if(input[i].value === "yes") counter++;
             }
         }
 
