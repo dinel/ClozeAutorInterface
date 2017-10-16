@@ -49,3 +49,7 @@ h2 {
     background-repeat: no-repeat;
     background-position: right top;
 }
+
+.red-border {
+    border: thin solid red;
+}

@@ -17,6 +17,7 @@
 /* global idQuiz */
 
 var questions_answered = [];
+var filter = "";
 
 $( document ).ready(function() {
     $('#btn-instructions').click(function() {
@@ -24,16 +25,37 @@ $( document ).ready(function() {
         if(prereading === 1) {
             $('#prereading').show();
             logAction("Opened the prereading questions for " + idQuiz);
+            filter = "#prereading";
         } else {
             logAction("Opened the text for " + idQuiz);
             $('#text').show();
+            filter = "#mcq";
         }
     });
-    
-    $('#btn-prereading').click(function() {
-        $('#prereading').hide();
-        logAction("Opened the text for " + idQuiz);
-        $('#text').show();
+        
+    $('#btn-prereading').click(function(e) {
+        var opts = $(filter + ' input:checkbox').map(function() { return this.value; }).get();
+        var flag = 0;
+        for(var i = 0; i < opts.length; i++) {
+            var name = $('#'+opts[i]).attr('name');
+            if(questions_answered.indexOf(name) === -1) {
+                $('#'+opts[i]).parent().parent().parent().addClass("red-border");
+                flag = 1;
+            }
+        }
+        
+        if(flag === 0) {
+            $('#prereading').hide();
+            logAction("Opened the text for " + idQuiz);
+            $('#text').show();
+            filter = "#mcq";
+        } else {
+             $('#incomplete-preread').show();
+             setTimeout(function() {
+                 $('#incomplete-preread').hide();
+             }, 2000);
+             e.preventDefault();
+        }
     });
     
     $('#btn-text').click(function() {
@@ -53,8 +75,26 @@ $( document ).ready(function() {
         $('#btn-rate').removeClass("disabled");
     });
     
-    $('#btn-submit-mcq').click(function() {
-        logAction("Finished with quiz " + idQuiz);
+    $('#btn-submit-mcq').click(function(e) {
+        var opts = $(filter + ' input:checkbox').map(function() { return this.value; }).get();
+        var flag = 0;
+        for(var i = 0; i < opts.length; i++) {
+            var name = $('#'+opts[i]).attr('name');
+            if(questions_answered.indexOf(name) === -1) {
+                $('#'+opts[i]).parent().parent().parent().addClass("red-border");
+                flag = 1;
+            }
+        }
+        
+        if(flag === 0) {
+            logAction("Finished with quiz " + idQuiz);            
+        } else {
+            $('#incomplete-mcq').show();
+            setTimeout(function() {
+                $('#incomplete-mcq').hide();
+            }, 2000);            
+            e.preventDefault();
+        }
     });
     
     $('.open-answer').change(function () {
@@ -67,7 +107,7 @@ $( document ).ready(function() {
         logAction("Selected answer " + $(this).attr("value") + " for question " + name);
         opts_sel = $('input:checkbox[name=' + name + ']:checked').map(function() { return this.value; }).get();
         if(opts_sel.length === parseInt($(this).data('correct'))) {
-            opts = $('input:checkbox[name=' + name + ']').map(function() { return this.value; }).get();
+            var opts = $('input:checkbox[name=' + name + ']').map(function() { return this.value; }).get();
             for(var i = 0; i < opts.length; i++) {
                 if(! $('#'+opts[i]).is(':checked')) {
                     $('#'+opts[i]).prop("disabled", true);
@@ -76,7 +116,7 @@ $( document ).ready(function() {
             $('#help-' + name).hide();
             $('#helpchange-' + name).show();
             questions_answered.push(name);
-            enable_buttons();
+            $(this).parent().parent().parent().removeClass("red-border");
         }
         
         if(opts_sel.length < parseInt($(this).data('correct'))) {
@@ -92,27 +132,11 @@ $( document ).ready(function() {
             if(index > -1) {
                 questions_answered.splice(index, 1);
             }
-            
-            enable_buttons();
         }
     });
     
     logAction("Opened instructions for ID:" + idQuiz);
 });
-
-function enable_buttons() {
-    if(questions_answered.length > 3 * prereading) {
-        $('#btn-prereading').removeClass('disabled');
-    } else {
-        $('#btn-prereading').addClass('disabled');
-    }
-    
-    if(questions_answered.length > 4 * prereading + 7) {
-        $('#btn-submit-mcq').removeClass('disabled');
-    } else {
-        $('#btn-submit-mcq').addClass('disabled');
-    }
-}
 
 function logAction(message) {
     var d = new Date();

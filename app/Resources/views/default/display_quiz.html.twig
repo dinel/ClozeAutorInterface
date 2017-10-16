@@ -29,7 +29,8 @@
                     {% for question in quiz.questions %}
                         {% include 'default/display_question.html.twig' with {'question': question } %}
                     {% endfor %}
-                    <a class="btn btn-default voffset4 disabled" id="btn-prereading" role="button">Next</a>
+                    <a class="btn btn-default voffset4 " id="btn-prereading" role="button">Next</a><br/>
+                    <div id="incomplete-preread" style="display: none;">Please answer all the questions</div>
                 </div>     
                 {% endif %}
                     
@@ -64,7 +65,8 @@
                             {% include 'default/display_question.html.twig' with {'question': question } %}
                         {% endfor %}
                         
-                        <a class="btn btn-default voffset4 disabled" id="btn-submit-mcq" role="button" href="{{ path('next') }}">Next</a>
+                        <a class="btn btn-default voffset4" id="btn-submit-mcq" role="button" href="{{ path('next') }}">Next</a>
+                        <div id="incomplete-mcq" style="display: none;">Please answer all the questions</div>
                     </div>
                 </div>
             </div>                
