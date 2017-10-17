@@ -20,5 +20,10 @@ $( document ).ready(function() {
         } else {
             $('#confirm').addClass("disabled");
         }
-    })    
+    })
+    
+    $('#btn-show-sheet').click(function() {
+        $('#info-sheet').toggle();
+        $('.btn-message').toggle();
+    });
 });
