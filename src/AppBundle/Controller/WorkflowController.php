@@ -84,7 +84,8 @@ class WorkflowController extends Controller
                 ));
                 
             default:
-                if(preg_match("/^prereading_([0-9]+)_([0-9]+)$/", $state, $matches)) {                    
+                if(preg_match("/^prereading_([0-9]+)_([0-9]+)$/", $state, $matches)) {
+                    $instructions = $this->getInstructions($request->getSession());
                     $quiz = $this->getDoctrine()
                                  ->getRepository('AppBundle:Quiz')
                                  ->find($matches[1]);
@@ -96,10 +97,12 @@ class WorkflowController extends Controller
                     return $this->render('default/display_quiz.html.twig', array(
                             'quiz' => $quiz,
                             'mcq' => $mcq,
+                            'instructions' => $instructions,
                     ));
                 }
                 
-                if(preg_match("/^mcq_([0-9]+)$/", $state, $matches)) {                                        
+                if(preg_match("/^mcq_([0-9]+)$/", $state, $matches)) {  
+                    $instructions = $this->getInstructions($request->getSession());
                     $mcq = $this->getDoctrine()
                                  ->getRepository('AppBundle:Quiz')
                                  ->find($matches[1]);
@@ -107,26 +110,31 @@ class WorkflowController extends Controller
                     return $this->render('default/display_quiz.html.twig', array(
                             'quiz' => NULL,
                             'mcq' => $mcq,
+                            'instructions' => $instructions,
                     ));
                 }
                 
-                if(preg_match("/^subjective_([0-9]+)$/", $state, $matches)) {                                        
+                if(preg_match("/^subjective_([0-9]+)$/", $state, $matches)) {
+                    $instructions = $this->getInstructions($request->getSession());
                     $subjective_survey = $this->getDoctrine()
                                  ->getRepository('AppBundle:Quiz')
                                  ->find($matches[1]);
                     
                     return $this->render('default/post_test_quiz.html.twig', array(
                             'quiz' => $subjective_survey,
+                            'instructions' => $instructions,
                     ));
                 }
                 
-                if(preg_match("/^reviews_([0-9]+)$/", $state, $matches)) {                                        
+                if(preg_match("/^reviews_([0-9]+)$/", $state, $matches)) {
+                    $instructions = $this->getInstructions($request->getSession());
                     $reviews_survey = $this->getDoctrine()
                                  ->getRepository('AppBundle:Quiz')
                                  ->find($matches[1]);
                     
                     return $this->render('default/post_test_quiz.html.twig', array(
                             'quiz' => $reviews_survey,
+                            'instructions' => $instructions,
                     ));
                 }
         }
@@ -159,6 +167,8 @@ class WorkflowController extends Controller
                 ['subjective_9', 'reviews_10', 'thank_you']);        
         
         $session->set('workflow', $workflow);
+        
+        $session->set('instruction', 1);
         
         return $this->redirectToRoute("homepage");
     }    
@@ -299,4 +309,14 @@ class WorkflowController extends Controller
                     ]           
                 ];
     }        
+    
+    private function getInstructions($session) {
+        $id = $session->get('instruction');
+        $instruction = $this->getDoctrine()
+                             ->getRepository("AppBundle:Instruction")
+                             ->find($id);
+        $session->set('instruction', $id + 1);
+        
+        return $instruction;        
+    }
 }

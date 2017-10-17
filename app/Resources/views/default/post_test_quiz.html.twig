@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <script>
+        var idQuiz = {{ quiz.id }};
+    </script>
     <div class="container">
         <div class="row voffset4">
             <div class="col-md-8">
                 <div id="instructions">
                     <h1>Instructions</h1>
                     <div>
-                        {{ quiz.instructions }}
-                        <script>
-                            var idQuiz = {{ quiz.id }};
-                        </script>
+                        {{ instructions.text|nl2br }}                        
                     </div>
                     <a class="btn btn-default voffset4" id="btn-instructions" role="button">Next</a>
                 </div>
