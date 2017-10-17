@@ -17,7 +17,6 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class ParticipantType extends AbstractType 
 {
@@ -30,9 +29,9 @@ class ParticipantType extends AbstractType
             ->add('email')
             ->add('age')
             ->add('years_edu', TextType::class, array(
-                    'label' => 'Years in formal education (the amount of years '
-                               . 'since you first started school until you '
-                               . 'finished your education. Gap years should be excluded)',                
+                    'label' => 'Years in formal education (The total number of years, '
+                                . 'from when you first started school until you finished '
+                                . ' your education. Gap years should be excluded)',                
             ));
     }
 }
