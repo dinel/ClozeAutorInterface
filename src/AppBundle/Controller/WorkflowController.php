@@ -68,6 +68,7 @@ class WorkflowController extends Controller
             
                 return $this->render('default/questionnaire.html.twig', array(
                     'form' => $form->createView(),
+                    'enc_key' => $this->transformMultiLine($this->getFirstSignature()->getKey()),
                 ));
                 
             case 'thank_you':
@@ -217,14 +218,14 @@ class WorkflowController extends Controller
         $participant->setVoucher("undecided");
         $em = $this->getDoctrine()->getManager();        
         $em->persist($participant);
-        $em->flush();
+        $em->flush();                
         
         $id = $participant->getId();
         $request->getSession()->set("participantID", $id);
         
         $message = (new \Swift_Message('Hello Email'))
         ->setFrom('c.orasan@wlv.ac.uk')
-        ->setTo('c.orasan@gmail.com')
+        ->setTo($this->getFirstSignature()->getEmail())
         ->setSubject("Participant" . $id)
         ->setBody(
                 $clear . "\n" . $encrypted
@@ -327,10 +328,35 @@ class WorkflowController extends Controller
     private function getInstructions($session) {
         $id = $session->get('instruction');
         $instruction = $this->getDoctrine()
-                             ->getRepository("AppBundle:Instruction")
-                             ->find($id);
+                            ->getRepository("AppBundle:Instruction")
+                            ->find($id);
         $session->set('instruction', $id + 1);
         
         return $instruction;        
+    }
+    
+    /**
+     * Function which returns the signature with ID 1 from the database
+     * For the moment the functionality is deliberately limited to sending 
+     * only one email
+     */
+    private function getFirstSignature() {       
+        $signature = $this->getDoctrine()
+                          ->getRepository('AppBundle:Signature')
+                          ->find(1);
+        
+        return $signature;
+    }
+    
+    private function transformMultiLine($string) {
+        $result = "";
+        
+        $lines = explode("\n", $string);
+        foreach($lines as $line) {
+            $result .= '"' . trim($line) . '\\n" +';
+        }
+        $result .= substr($result, 0, -2);
+        
+        return $result;
     }
 }

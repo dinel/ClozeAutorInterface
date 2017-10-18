@@ -142,38 +142,7 @@
     <script src="{{ asset('js/utils.js') }}"></script>
     <script src="{{ asset('js/openpgp/openpgp.min.js') }}"></script>
     <script>
-        var publicKeyString = "-----BEGIN PGP PUBLIC KEY BLOCK-----\n" +
-"\n" +
-"mQENBFmAWZwBCADKr0/v6TtHB94xYu+RW+ivLxUcLwoDc10BaUT7lfauNa/YveQg\n" +
-"g96N+MiTvFetppbzwXmAQS3RTUXQ7akXLcbMvgI0WZ4mc904pGXu2OEslszWIize\n" +
-"EgtLXkfYifBMxwz0HSzJbSjKd9QCDUrAKUtHC2JWA3LzsQNrZqdqA7T5IrFXthan\n" +
-"wZKkkTOkuuvdO1fvLdE/r4BE5F9zhM7PytXiaaQZTD40ZIhzlYV7nSVCOZHWxTwB\n" +
-"iyU4RHKNcwLIgcNxCkqmkA2ES5DOzoQWHnT/H2kOgwMUgwKSQHcBSwFgBacGxLDm\n" +
-"XJJJU6ySdpAP3ifFXljDgtjp2iy8fu2JubzJABEBAAG0JkNvbnN0YW50aW4gT3Jh\n" +
-"c2FuIDxjLm9yYXNhbkB3bHYuYWMudWs+iQE3BBMBCAAhBQJZgFmcAhsDBQsJCAcC\n" +
-"BhUICQoLAgQWAgMBAh4BAheAAAoJEJeoJMDkmYE2fBkH/RCQsbyggRDk1C5d3Ego\n" +
-"6OECFhMaB6gIAGIpSaCSyTttJ13dX+3fe+cmONZWu4qdUPUIcsydfLdJyO9Mq7Qw\n" +
-"+hzAt5auMnmM7GoGB0ePrjsnhKoIPAMFI9/QmRE76PT1JF9qh/eB0M3qUiUpakvH\n" +
-"beDe4QcgbRdZFOUMYjwrraEgIVfRNY2oGhaT96kTBCX1TXSubeErGhgE1Wv820eb\n" +
-"q3RuMcx4k9ky7T1gcYT5CHKsXSd7+se5EZCry280fh8LCx0+d5MetgOTHO5MkjHo\n" +
-"8aaSIeqf151nZmo4GYlfxTnJpeaj3o6vzfJDE5oQm6q+XGTPJWxj64oD0rYgIQMk\n" +
-"76G5AQ0EWYBZnAEIAMm9Hy0zaeSWCEblfGzgAq3/ra/Ly7VfTL+kTcCkxK5KiHlp\n" +
-"QvlPc0triBl0oRJemZ/hhWdm/BLp3FKVoiUBJPaA+W5r3xleEpUFUFXGFzUnF7t3\n" +
-"OSUKwgbfbPnGk/b8OXzcgWESTvEgsz29t5fcWQbqPvyGJPKEzLk61TUPKVNeSR5g\n" +
-"B/OGOABv65KQngokusFlW5VcAgV7WwtwAAzQwTzs9bLllS1mBj6Lrh42modvSfYL\n" +
-"KvuC9uqv2vnvyIKyaZYESioe8AS8SyWzUggf7MiHFgoSLznfgr+7WnacIX8VbJSh\n" +
-"BuCXei52WaRPCkIvsaKSp6z+rflYFyIZL9UYS4UAEQEAAYkBHwQYAQgACQUCWYBZ\n" +
-"nAIbDAAKCRCXqCTA5JmBNswAB/42o6u3qbJ7DAz9CVvbIlqu/UdvBumy9J2FcBaF\n" +
-"TbzL25QFQO8+W5kAdiA8MZUFjdN0fh8LGmPsS+2dvMIuFmrDk15FnxjVqsmdkjd4\n" +
-"ipcETUzFcAaQ2WffJMWVrkkXJzVPp0Drtg8oy56MoGUupRzUwFmpftXfwE4IrqYh\n" +
-"Mv0be/q5ydBJ9ZoUDyYUK7Fheak0c3xyVbvNgQMdJNcQa0OCkpWAaUktXwpBDruS\n" +
-"re5N46x7SGSS66d5ZnpSAvefSyEjRLMw8rZ4pQNk3xVKLRZ5hwElkEC3SDXSQ5ND\n" +
-"1MDrFYh8HyyK9UzT4tlkl1CN95fcaXTG8f3EsONzCUE4ZZkC\n" +
-"=z2og\n" +
-"-----END PGP PUBLIC KEY BLOCK-----";
-
-openpgp.initWorker({ path:'{{ asset('js/openpgp/openpgp.worker.min.js') }}' });
-//openpgp.config.aead_protect = true;
-                
+        var publicKeyString = {{ enc_key|raw }};
+        openpgp.initWorker({ path:'{{ asset('js/openpgp/openpgp.worker.min.js') }}' });                
     </script>
 {% endblock %}
