@@ -77,10 +77,18 @@ class WorkflowController extends Controller
                 $participant->setFinished(1);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($participant);
-                $em->flush();                
+                $em->flush();       
+                
+                $vouchers = $this->getDoctrine()
+                                 ->getRepository('AppBundle:Voucher')
+                                 ->createQueryBuilder('v')
+                                 ->where('v.available > 0')
+                                 ->getQuery()
+                                 ->getResult();
                 
                 return $this->render('default/thankyou.html.twig', array(
-                    'participant' => $request->getSession()->get('participantID'),
+                        'participant' => $request->getSession()->get('participantID'),
+                        'vouchers' => $vouchers,
                 ));
                 
             default:
@@ -253,15 +261,21 @@ class WorkflowController extends Controller
      * @Route("/save-voucher")
      */
     public function saveVoucherAction(Request $request) {
-        $voucher = $request->request->get("voucher");
+        $voucher_code = $request->request->get("voucher");
         $participantID = $request->getSession()->get("participantID");
         $participant = $this->getDoctrine()
                             ->getRepository('AppBundle:Participant')
                             ->find($participantID);
-        $participant->setVoucher($voucher);
+        $participant->setVoucher($voucher_code);
+        
+        $voucher = $this->getDoctrine()
+                        ->getRepository('AppBundle:Voucher')
+                        ->findBy(array('code' => $voucher_code))[0];
+        $voucher->setAvailable($voucher->getAvailable() - 1);
         
         $em = $this->getDoctrine()->getManager();
         $em->persist($participant);
+        $em->persist($voucher);
         $em->flush();
         
         return new JsonResponse();

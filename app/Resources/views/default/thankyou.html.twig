@@ -19,8 +19,9 @@
                     Please select which type of voucher you would like:
                     <select id="select-voucher">
                         <option value="Voucher" disabled selected></option>
-                        <option value="amazon">£10 Amazon voucher</option>
-                        <option value="m&s">£10 Marks and Spencer voucher</option>
+                        {% for voucher in vouchers %}
+                            <option value="{{ voucher.code }}">{{ voucher.text }}</option>
+                        {% endfor %}                        
                     </select><br/>
                     <a id="submit-option" class="btn btn-default disabled" role="button">Submit choice</a>
                 </div>
