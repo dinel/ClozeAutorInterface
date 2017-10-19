@@ -14,7 +14,7 @@ use AppBundle\Form\ParticipantType;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/old", name="homepage_old")
      */
     public function indexAction(Request $request)
     {
@@ -46,7 +46,7 @@ class DefaultController extends Controller
                 return $this->render('default/index.html.twig', [ ]);
         }        
     }
-    
+        
     /**
      * @Route("/confirm_interest", name="confirm_interest")
      */
@@ -60,49 +60,8 @@ class DefaultController extends Controller
         
         return $this->redirectToRoute("homepage");
     }
-    
-    /**
-     * @Route("/confirm_age", name="confirm_age")
-     */
-    public function confirmAgeAction(Request $request) {
-        $session = $request->getSession();
-        if($session->get("state") === "welcome") {
-            $session->set("state", "confirm_age");
-        } else {
-            $session->set("state", "welcome");
-        }
         
-        return $this->redirectToRoute("homepage");
-    }
-    
-    /**
-     * @Route("/agree_conditions/{age}", name="agree_conditions")
-     */
-    public function agreeConditionsAction(Request $request, $age) {
-        $session = $request->getSession();
-        if($session->get("state") === "confirm_age") {
-            $session->set("age_agree", $age);            
-            $session->set("state", "agree_" . $age);
-        } else {
-            $session->set("state", "welcome");            
-        }
-        
-        return $this->redirectToRoute("homepage");
-    }    
-    
-    /**
-     * @Route("/confirm_participation", name="confirm_participation")
-     */
-    public function confirmParticipationAction(Request $request) {
-        $session = $request->getSession();
-        if($session->get("state") === "agree_over" || $session->get("state") === "agree_under") {
-            $session->set("state", "survey");
-            return $this->redirectToRoute("questionnaire");
-        } else {
-            $session->set("state", "welcome");
-            return $this->redirectToRoute("homepage");
-        }                
-    } 
+   
         
     /**
      * @Route("/questionnaire", name="questionnaire")
@@ -139,8 +98,9 @@ class DefaultController extends Controller
         $session = $request->getSession();
         if($session->get("state") === "text") {            
             $participant = $session->get("participant");            
-            
+                                    
             $text = $this->processText($participant->getText());
+            $text = processText("This is [a] test for [the] program");
             $session->set("text", $text);
             
             return $this->render('default/text.html.twig', [ 
@@ -223,6 +183,22 @@ class DefaultController extends Controller
         ));
     }
     
+    /**
+     * @Route("/test-cloze/{id}")
+     * @param type $id the ID of the test to be displayed
+     */
+    public function displayClozeTestAction($id) {
+        $test = $this->getDoctrine()
+                     ->getRepository('AppBundle:ClozeTest')
+                     ->find($id);               
+
+        return $this->render('default/text.html.twig', [ 
+            "text" => $this->processText($test->getText()),
+            "title" => $test->getTitle(),
+        ]);                
+    }
+
+
     /************************************************
      * Private methods
      ************************************************/    
