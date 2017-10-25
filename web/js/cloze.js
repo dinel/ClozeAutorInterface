@@ -20,11 +20,38 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var idWord = ev.dataTransfer.getData("text");
-    ev.target.appendChild(document.getElementById(idWord));
+    var target = ev.target;
+    
+    // ensure that the gap is not filled already
+    if(! target.classList.contains("gap")) {
+        target.classList.remove('filler-in-text');
+        target.classList.add('filler-in-list');        
+        target.classList.add('filler');
+        var parent = target.parentNode;
+        $('#words').append(target);
+        target = parent;
+        
+        /*
+        idWord = $(this).children().last().attr('id');
+        idGap = $(this).attr('id');
+        
+        updateLog("R:" + idWord + ":" + idGap);
+        */
+        $("#words").shuffleChildren();
+        filled_gaps--;
+    }
+    
+    // check the parent
+    if(document.getElementById(idWord).parentNode.classList.contains("filled-gap")) {
+        document.getElementById(idWord).parentNode.classList.remove("filled-gap");
+        document.getElementById(idWord).parentNode.classList.add("gap");
+    }
+    
+    target.appendChild(document.getElementById(idWord));
     document.getElementById(idWord).classList.remove("filler-in-list");
     document.getElementById(idWord).classList.add("filler-in-text");
-    ev.target.classList.remove("gap");
-    ev.target.classList.add("filled-gap");
+    target.classList.remove("gap");
+    target.classList.add("filled-gap");
     filled_gaps++;
     
     if(filled_gaps === no_gaps) {
