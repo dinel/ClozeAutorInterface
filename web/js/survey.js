@@ -140,9 +140,7 @@ $( document ).ready(function() {
             participant_info += "Reading: " + $('#freq option:checked').val() + "\n";
         }
         participant_info += "Current employment: " + participant["employed"]+ "\n";
-        participant_info += "Past employment: " + participant["past_employed"]+ "\n";
-        
-        console.log(participant_info);
+        participant_info += "Past employment: " + participant["past_employed"]+ "\n";        
         
         options = {
             data: participant_info,                             // input as String (or Uint8Array)
