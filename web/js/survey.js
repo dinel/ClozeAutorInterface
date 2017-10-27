@@ -109,6 +109,18 @@ $( document ).ready(function() {
         }
     });
     
+    $('input:radio[name=employed]').change(function() {
+        enable[10] = 1;
+        participant["employed"] = $(this).val();
+        check_enable();
+    });
+    
+    $('input:radio[name=past_employed]').change(function() {
+        enable[11] = 1;
+        participant["past_employed"] = $(this).val();
+        check_enable();
+    });
+    
     $('#submit-questionnaire').click(function () {
         var participant_info = "";
         participant_info += "Name: " + participant["name"] + "\n";
@@ -127,6 +139,8 @@ $( document ).ready(function() {
         } else {
             participant_info += "Reading: " + $('#freq option:checked').val() + "\n";
         }
+        participant_info += "Current employment: " + participant["employed"]+ "\n";
+        participant_info += "Past employment: " + participant["past_employed"]+ "\n";
         
         console.log(participant_info);
         
@@ -152,7 +166,7 @@ function check_enable() {
         return sum + value;
     }, 0);
     
-    if(sum === 10) {
+    if(sum === 12) {
         $('#submit-questionnaire').removeClass("disabled");
     } 
 }
