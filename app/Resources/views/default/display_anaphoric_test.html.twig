@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/anaphoricity.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row voffset4">
+            <div class="col-md-8">
+                <div id="instructions">
+                    <h1>Instructions</h1>
+                    <div>
+                        {{ instructions.text|nl2br }}                        
+                    </div>
+                    <a class="btn btn-default voffset4" id="btn-instructions" role="button">Next</a> 
+                </div>                                                   
+                    
+                <div id="cloze-test" style="display: block">
+                    
+                    <h3>{{ title }}</h3>
+                    <div class="voffset4" id="text">
+                        {% set counter = 0 %}
+                        {% for word in text %}
+                            {% if word[0] == 1 %}                                
+                                {{word[1][0]}}=<div id="gap{{ counter }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap gap-position" data-original="{{word[1][0]}}">&nbsp;                                    
+                                    <div class="gap-fillers" id="words{{counter}}">
+                                        {% for filler in word[1][1:] %}
+                                            <div id="word-{{counter}}-{{loop.index}}" class="filler filler-in-list" 
+                                                 draggable="true" ondragstart="drag(event)">{{filler}}</div>
+                                        {% endfor %}                                        
+                                    </div>                                    
+                                </div>                                
+                                {% set counter = counter + 1 %}
+                            {% elseif word[0] == 2 %}
+                                <br/>
+                            {% else %}
+                                <span>{{ word[1] }}</span>                             
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="voffset5">
+                        <a id="submit-result" class="btn btn-default" role="button">Submit &raquo;</a><br/>
+                        <div class="incomplete" style="display:none;">Please fill in all the gaps</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>                
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/anaphoricity.js') }}"></script>
+{% endblock %}
