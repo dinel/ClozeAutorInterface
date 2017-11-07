@@ -108,7 +108,7 @@ $( document ).ready(function() {
         var notAnswered = $('.gap');
         
         if(notAnswered.length === 0) {
-            updateLog("Going to submit the results");
+            alert("Going to submit the results");
         } else {
             notAnswered.each(function() {
                $(this).find('.gap-fillers').addClass("red-border");
