@@ -123,6 +123,31 @@ class WorkflowController extends Controller
                     ));
                 }
                 
+                if(preg_match("/^cloze_([0-9]+)$/", $state, $matches)) {  
+                    $instructions = $this->getInstructions($request->getSession());
+                    $cloze = $this->getDoctrine()
+                                ->getRepository('AppBundle:ClozeTest')
+                                ->find($matches[1]);
+                    
+                    return $this->render('default/display_cloze.html.twig', array(
+                            'cloze' => $cloze,
+                            'instructions' => $instructions,
+                    ));
+                }
+                
+                if(preg_match("/^cloze_mcq_([0-9]+)$/", $state, $matches)) {  
+                    
+                    $mcq = $this->getDoctrine()
+                                ->getRepository('AppBundle:Quiz')
+                                ->find($matches[1]);
+                    
+                    return $this->render('default/display_cloze_quiz.html.twig', array(
+                            'mcq' => $mcq,
+                    ));
+                }
+                
+                
+                
                 if(preg_match("/^subjective_([0-9]+)$/", $state, $matches)) {
                     $instructions = $this->getInstructions($request->getSession());
                     $subjective_survey = $this->getDoctrine()
@@ -181,6 +206,36 @@ class WorkflowController extends Controller
         
         return $this->redirectToRoute("homepage");
     }    
+    
+    /**
+     * @Route("/start-cloze")
+     */
+    public function startClozeAction(Request $request) {
+        if(! $this->container->get('session')->isStarted()) {
+            $session = new Session();
+            $session->start();
+        } else {
+            $session = $request->getSession();
+        }
+        $session->invalidate();
+        
+        $sequences = $this->getTextSelection();
+        $session->set('sequence', $sequences[0]);
+                
+        $workflow = array_merge(['questionnaire', 'cloze_1', 'cloze_mcq_1']);
+                /*
+                ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire'],
+                $sequences[1], 
+                ['subjective_9', 'reviews_10', 'thank_you']);        
+                 * 
+                 */
+        
+        $session->set('workflow', $workflow);
+        
+        $session->set('instruction', 1);
+        
+        return $this->redirectToRoute("homepage");
+    }
 
     /**
      * @Route("/next", name="next")
@@ -281,6 +336,27 @@ class WorkflowController extends Controller
         
         return new JsonResponse();
     }
+    
+    /**
+     * @Route("/test-anaphora/{id}")
+     * @param type $id the ID of the test to be displayed
+     */
+    public function displayAnaphoricityTestAction($id) {
+        $instructions = $this->getDoctrine()
+                             ->getRepository("AppBundle:Instruction")
+                             ->find(1);
+        
+        $test = $this->getDoctrine()
+                     ->getRepository('AppBundle:AnaphoricCueingTest')
+                     ->find($id);               
+
+        return $this->render('default/display_anaphoric_test.html.twig', [ 
+            "text" => $this->processAnaphoricityTest($test->getText()),            
+            "title" => $test->getTitle(),
+            "instructions" => $instructions,
+        ]);                
+    }
+    
 
     /**************************************************************
      * 
@@ -358,5 +434,65 @@ class WorkflowController extends Controller
         $result .= substr($result, 0, -2);
         
         return $result;
+    }
+    
+    /**
+     * Processes a cloze text
+     * @param type $text
+     * @return int
+     */
+    private function processClozeText($text) {
+        /* Structure for each element
+         * 0: type 0=text, 1=gap
+         * 1: the actual text
+         * 2: status 0=not filled, 1=correct, 2=incorrect
+         * 3: offset of the filler
+         */
+        $blocks = array();        
+    
+        foreach (explode("\n", $text) as $line) {                
+            while(preg_match("/^([^\[]*)\[([^\]]+)\](.*)/", $line, $matches)) {
+                if(strlen(trim($matches[1])) > 0) {
+                    $blocks[] = array(0, trim($matches[1]));
+                }
+                
+                $blocks[] = array(1, $matches[2], 0);
+                $line = $matches[3];
+            }
+            $line .= "<br>";
+            $blocks[] = array(0, $line);
+        }
+        
+        return $blocks;
+    }
+    
+    /**
+     * Processes a cloze text
+     * @param type $text
+     * @return int
+     */
+    private function processAnaphoricityTest($text) {
+        /* Structure for each element
+         * 0: type 0=text, 1=gap, 2=new line
+         * 1: the actual text for text, an array with the elements for gap
+         * 2: status 0=not filled, 1=correct, 2=incorrect
+         * 3: offset of the filler
+         */
+        $blocks = array();        
+    
+        foreach (explode("\n", $text) as $line) {                
+            while(preg_match("/^([^\[]*)\[([^\]]+)\](.*)/", $line, $matches)) {
+                if(strlen(trim($matches[1])) > 0) {
+                    $blocks[] = array(0, trim($matches[1]));
+                }
+                
+                $blocks[] = array(1, explode("|", $matches[2]), 0);
+                $line = $matches[3];
+            }            
+            $blocks[] = array(0, $line);
+            $blocks[] = array(2);
+        }
+        
+        return $blocks;
     }
 }
