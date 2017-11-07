@@ -46,6 +46,11 @@ class ClozeTest {
     /**
      * @ORM\Column(type="text")
      */
+    protected $original_text;
+    
+    /**
+     * @ORM\Column(type="text")
+     */
     protected $text;
     
     public function getId() {
@@ -56,6 +61,10 @@ class ClozeTest {
         return $this->title;
     }
     
+    public function getOriginalText() {
+        return $this->original_text;
+    }
+        
     public function getText() {
         return $this->text;
     }
@@ -70,8 +79,13 @@ class ClozeTest {
         return $this;
     }
     
+    public function setOriginalText($original_text) {
+        $this->original_text = $original_text;
+        return $this;
+    }
+        
     public function setText($text) {
         $this->text = $text;
         return $this;
-    }    
+    }       
 }
