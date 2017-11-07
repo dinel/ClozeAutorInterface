@@ -21,9 +21,9 @@ and open the template in the editor.
 
 .gap-fillers {
     position: absolute;
-    width: 300px;
+    width: 400px;
     top: 2em;
-    right: -100px;
+    right: -150px;
     text-align: center;
 }
 
