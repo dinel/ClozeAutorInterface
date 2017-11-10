@@ -9,7 +9,7 @@ var operations = "";
 
 function allowDrop(ev) {
     
-    if(ev.target.id[0] === "w") {
+    if(ev.target.id[0] === "w") {        
         idGap = ev.target.id.substring(ev.target.id.indexOf("-") + 1, 
                                        ev.target.id.lastIndexOf("-"));
     } else {
@@ -39,6 +39,7 @@ function drop(ev) {
         target.classList.remove('filler-in-text');
         target.classList.add('filler-in-list');        
         target.classList.add('filler');
+        target.setAttribute('draggable', 'true');
         var parent = target.parentNode;
         $('#words'+parent.id.substring(3)).append(target);
         target = parent;
@@ -61,6 +62,7 @@ function drop(ev) {
     }
     
     target.appendChild(document.getElementById(idWord));
+    document.getElementById(idWord).setAttribute('draggable', 'false');
     document.getElementById(idWord).classList.remove("filler-in-list");
     document.getElementById(idWord).classList.add("filler-in-text");
     target.classList.remove("gap");
@@ -83,6 +85,7 @@ $( document ).ready(function() {
         $(this).removeClass('filled-gap');
         $(this).children().last().removeClass('filler-in-text');
         $(this).children().last().addClass('filler filler-in-list');
+        $(this).children().last().attr('draggable', 'true');
         idGap = $(this).attr('id');
         idWord = $(this).children().last().attr('id');
         $('#words'+idGap.substring(3)).append($(this).children().last());        
