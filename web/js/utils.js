@@ -40,3 +40,19 @@ function post(path, params, method) {
     document.body.appendChild(form);
     form.submit();
 }
+
+function logAction(message) {
+    var d = new Date();
+    
+    $.ajax({
+       type: 'POST',
+       url: '/log_action',
+       data: {
+           'timeMiliseconds': d.getTime(),
+           'timeClear': d.toString(),
+           'message': message
+       },
+       success: function(msg) {
+       }
+    });
+}
