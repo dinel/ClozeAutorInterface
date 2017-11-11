@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-/* global filled_gaps, no_gaps, redirection */
+/* global filled_gaps, no_gaps, idTest */
 
 var saveClicked = false;
 var operations = "";
@@ -27,16 +27,16 @@ function drop(ev) {
         target.classList.remove('filler-in-text');
         target.classList.add('filler-in-list');        
         target.classList.add('filler');
+        target.setAttribute('draggable', 'true');
+        var idWordLog = target.id;
+        
         var parent = target.parentNode;
         $('#words').append(target);
         target = parent;
+                        
+        var idGapLog = parent.id;        
+        logAction("Removed:" + idWordLog + ":" + idGapLog);
         
-        /*
-        idWord = $(this).children().last().attr('id');
-        idGap = $(this).attr('id');
-        
-        updateLog("R:" + idWord + ":" + idGap);
-        */
         $("#words").shuffleChildren();
         filled_gaps--;
     }
@@ -48,6 +48,7 @@ function drop(ev) {
     }
     
     target.appendChild(document.getElementById(idWord));
+    document.getElementById(idWord).setAttribute('draggable', 'false');
     document.getElementById(idWord).classList.remove("filler-in-list");
     document.getElementById(idWord).classList.add("filler-in-text");
     target.classList.remove("gap");
@@ -60,22 +61,19 @@ function drop(ev) {
     
     idGap = ev.target.id;
     
-    updateLog("M:" + idWord + ":" + idGap);
+    logAction("Moved:" + idWord + ":" + idGap);
 }
 
 $( document ).ready(function() {
     $("#words").shuffleChildren();
-    updateLog("Opened text");
-    
-    if(redirection === "feedback") {
-        show_results();
-    }
+    logAction("Opened cloze test " + idTest);
     
     $('#text').on('click', '.filled-gap', function() {
         $(this).addClass('gap');
         $(this).removeClass('filled-gap');
         $(this).children().last().removeClass('filler-in-text');
         $(this).children().last().addClass('filler filler-in-list');
+        $(this).children().last().attr('draggable', 'true');
         idWord = $(this).children().last().attr('id');
         $('#words').append($(this).children().last());
         filled_gaps--;
@@ -86,7 +84,7 @@ $( document ).ready(function() {
                 
         idGap = $(this).attr('id');
         
-        updateLog("R:" + idWord + ":" + idGap);
+        logAction("Removed:" + idWord + ":" + idGap);
         $("#words").shuffleChildren();
     });
     
@@ -97,20 +95,16 @@ $( document ).ready(function() {
     });
     
     $(window).blur(function() {
-        updateLog("Changed");
+        logAction("Changed to a different window");
     });
     
     $(window).focus(function() {
-        updateLog("Back");
+        logAction("Back to quiz window " + idTest);
     });
     
     $('#submit-result').click(function() {
         saveClicked = true;
-        updateLog("Submit");
-        
-        var params = [];
-        params["operations"] = operations;
-        post("/" + redirection, params, "post");
+        logAction("Submit cloze test " + idTest);        
     });
     
     $('#try-again').click( function() {
