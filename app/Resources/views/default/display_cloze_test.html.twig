@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/cloze.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row voffset4">
+            <div class="col-md-8">                                    
+                <div id="cloze-test">
+                    
+                    <h3>{{ title }}</h3>
+                    <div class="voffset4" id="text">
+                        {% set counter = 0 %}
+                        {% for word in text %}
+                            {% if word[0] == 1 %}
+                                <div id="gap{{ counter }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
+                                {% set counter = counter + 1 %}
+                            {% elseif word[0] == 2 %}
+                                <p class="empty-line"></p>
+                            {% else %}
+                                <span>{{ word[1] }}</span>                             
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="voffset5">
+                        <a id="submit-result" class="btn btn-default disabled" role="button" href="{{ path('next') }}">Submit &raquo;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">                
+                <div data-spy="affix" id="words">
+                    {% set counter = 0 %}
+                    {% for word in text %}
+                        {% if word[0] == 1 %}
+                            <div id="word{{ counter }}" ondragstart="drag(event)" 
+                                 class="filler filler-in-list" draggable="true">{{ word[1] }}</div>
+                            {% set counter = counter + 1 %}
+                        {% endif %}                    
+                    {% endfor %}          
+                </div>
+                
+                <script>
+                    var no_gaps = {{ counter }};
+                    var filled_gaps = 0;
+                    var idTest = {{ textID }};
+                </script>                
+            </div>
+        </div>
+    </div>                
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/cloze.js') }}"></script>
+    <script src="{{ asset('js/utils.js') }}"></script>
+{% endblock %}
