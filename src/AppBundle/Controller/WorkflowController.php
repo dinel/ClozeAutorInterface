@@ -124,14 +124,14 @@ class WorkflowController extends Controller
                 }
                 
                 if(preg_match("/^cloze_([0-9]+)$/", $state, $matches)) {  
-                    $instructions = $this->getInstructions($request->getSession());
                     $cloze = $this->getDoctrine()
                                 ->getRepository('AppBundle:ClozeTest')
                                 ->find($matches[1]);
                     
-                    return $this->render('default/display_cloze.html.twig', array(
-                            'cloze' => $cloze,
-                            'instructions' => $instructions,
+                    return $this->render('default/display_cloze_test.html.twig', array(
+                            'text' => $this->processClozeText($cloze->getText()),
+                            'title' => $cloze->getTitle(),
+                            'textID' => $cloze->getId(),
                     ));
                 }
                 
@@ -144,9 +144,7 @@ class WorkflowController extends Controller
                     return $this->render('default/display_cloze_quiz.html.twig', array(
                             'mcq' => $mcq,
                     ));
-                }
-                
-                
+                }                                
                 
                 if(preg_match("/^subjective_([0-9]+)$/", $state, $matches)) {
                     $instructions = $this->getInstructions($request->getSession());
@@ -156,6 +154,16 @@ class WorkflowController extends Controller
                     
                     return $this->render('default/post_test_quiz.html.twig', array(
                             'quiz' => $subjective_survey,
+                            'instructions' => $instructions,
+                    ));
+                }
+                
+                if(preg_match("/^instructions_([0-9]+)$/", $state, $matches)) {
+                    $instructions = $this->getDoctrine()
+                                         ->getRepository('AppBundle:Instruction')
+                                         ->find($matches[1]);
+                    
+                    return $this->render('default/display_instructions.html.twig', array(
                             'instructions' => $instructions,
                     ));
                 }
@@ -222,7 +230,8 @@ class WorkflowController extends Controller
         $sequences = $this->getTextSelection();
         $session->set('sequence', $sequences[0]);
                 
-        $workflow = array_merge(['questionnaire', 'cloze_1', 'cloze_mcq_1']);
+        $workflow = array_merge(['questionnaire', 'instructions_1', 'cloze_mcq_1',
+            'instructions_2', 'cloze_1', 'cloze_mcq_2']);
                 /*
                 ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire'],
                 $sequences[1], 
@@ -443,7 +452,7 @@ class WorkflowController extends Controller
      */
     private function processClozeText($text) {
         /* Structure for each element
-         * 0: type 0=text, 1=gap
+         * 0: type 0=text, 1=gap, 2=new line
          * 1: the actual text
          * 2: status 0=not filled, 1=correct, 2=incorrect
          * 3: offset of the filler
@@ -459,8 +468,8 @@ class WorkflowController extends Controller
                 $blocks[] = array(1, $matches[2], 0);
                 $line = $matches[3];
             }
-            $line .= "<br>";
             $blocks[] = array(0, $line);
+            $blocks[] = array(2);
         }
         
         return $blocks;
