@@ -24,6 +24,12 @@ function drop(ev) {
     
     // ensure that the gap is not filled already
     if(! target.classList.contains("gap")) {
+        
+        // in some cases the target is the div that contains the filler
+        if(target.classList.contains("filled-gap")) {
+            target = target.lastChild;
+        }
+        
         target.classList.remove('filler-in-text');
         target.classList.add('filler-in-list');        
         target.classList.add('filler');
