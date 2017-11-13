@@ -26,11 +26,10 @@
                         {% set counter = 0 %}
                         {% for word in text %}
                             {% if word[0] == 1 %}                                
-                                {{word[1][0]}}=<div id="gap{{ counter }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap gap-position" data-original="{{word[1][0]}}">&nbsp;                                    
-                                    <div class="gap-fillers" id="words{{counter}}">
+                                <div id="gap{{ counter }}" class="gap gap-position">{{word[1][0]}}
+                                    <div class="gap-fillers not-answered" id="words{{counter}}">
                                         {% for filler in word[1][1:] %}
-                                            <div id="word-{{counter}}-{{loop.index}}" class="filler filler-in-list" 
-                                                 draggable="true" ondragstart="drag(event)">{{filler}}</div>
+                                            <div id="word-{{counter}}-{{loop.index}}" class="filler filler-{{counter}}">{{filler}}</div>
                                         {% endfor %}                                        
                                     </div>                                    
                                 </div>                                

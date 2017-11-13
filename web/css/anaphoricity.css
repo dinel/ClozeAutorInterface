@@ -11,7 +11,10 @@ and open the template in the editor.
 .gap {
     width: 100px;
     border-bottom: black thin dashed;
-    display: inline-block;    
+    display: inline-block;
+    text-align: center;
+    color: red;
+    font-weight: bold;
 }
 
 .gap-position {
@@ -27,43 +30,22 @@ and open the template in the editor.
     text-align: center;
 }
 
-.filler-in-list {
-    padding: 0.3em 0.3em 0.3em 0.3em;
-    background-color: #fefbd1;
-    font-size: 90%;
-}
-
-.filler-in-text {
-    text-align: center;
-    border-bottom: black thin dashed;
-    min-width: 100px;
-    padding-right: 20px;
-    padding-left: 20px;
-}
-
 .filler {
     display: inline-block;    
     margin: 0.4em;
-}
-
-.filler-in-text:hover{
-    background-image: url("close-button-png-30227.png");
-    background-size: 20px 20px;
-    background-repeat: no-repeat;
-    background-position: right top;
-}
-
-.filled-gap {
-    display: inline-block;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    border: thin black solid;
+    font-size: 90%;
+    font-weight: normal;
+    color: black;
+    cursor: pointer;
 }
 
 #container {
     padding-bottom: 220px;    
 }
 
-#words {
-    height: 95vh;
-    padding-top:20px;
-    padding-left: 3em;
-    overflow-y: auto;
+.highlighted {
+    font-weight: bold;
+    color: green;
 }
