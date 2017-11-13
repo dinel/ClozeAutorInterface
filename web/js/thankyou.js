@@ -32,4 +32,21 @@ $( document ).ready(function() {
             }
         });        
     });
+    
+    $('#contact-future').click(function() {
+        var contact = 0;
+        if($('#contact-future').is(':checked')) {
+            contact = 1;
+        }
+        
+        $.ajax({
+            type: 'POST',
+            url: '/save-contact',
+            data: {
+                'value': contact,
+            },
+            success: function(msg) {
+            }
+        });        
+    })
 });

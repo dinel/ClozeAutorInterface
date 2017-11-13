@@ -347,6 +347,24 @@ class WorkflowController extends Controller
     }
     
     /**
+     * @Route("/save-contact")
+     */
+    public function saveContactAction(Request $request) {
+        $contact = $request->request->get("value");
+        $participantID = $request->getSession()->get("participantID");
+        $participant = $this->getDoctrine()
+                            ->getRepository('AppBundle:Participant')
+                            ->find($participantID);
+        $participant->setFutureExperiment($contact);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($participant);
+        $em->flush();
+        
+        return new JsonResponse();
+    }
+
+        /**
      * @Route("/test-anaphora/{id}")
      * @param type $id the ID of the test to be displayed
      */

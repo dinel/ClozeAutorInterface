@@ -44,6 +44,11 @@ class Participant {
      * @ORM\Column(type="string")
      */
     protected $voucher;
+    
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $futureExperiment;
 
     protected $name;
     
@@ -126,6 +131,15 @@ class Participant {
 
     public function setVoucher($voucher) {
         $this->voucher = $voucher;
+        return $this;
+    }
+    
+    public function getFutureExperiment() {
+        return $this->futureExperiment;
+    }
+
+    public function setFutureExperiment($futureExperiment) {
+        $this->futureExperiment = $futureExperiment;
         return $this;
     }
 }

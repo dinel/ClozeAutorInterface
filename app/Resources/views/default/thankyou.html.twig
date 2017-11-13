@@ -13,17 +13,24 @@
                 </p>
                 <p>
                     In any communication please mention that your ID was {{ participant }}.
-                </p>
+                </p>                
                 
                 <div class="voffset4" id="div-voucher">
-                    Please select which type of voucher you would like:
-                    <select id="select-voucher">
-                        <option value="Voucher" disabled selected></option>
-                        {% for voucher in vouchers %}
-                            <option value="{{ voucher.code }}">{{ voucher.text }}</option>
-                        {% endfor %}                        
-                    </select><br/>
-                    <a id="submit-option" class="btn btn-default disabled" role="button">Submit choice</a>
+                    <p class="voffset4">
+                        <input type="checkbox" id="contact-future"> I would be interested to take part in future research. 
+                        If you select this option we may contact you in future to invite you to take part in similar experiments.
+                    </p>
+                    
+                    <p class="voffset4">
+                        Please select which type of voucher you would like:
+                        <select id="select-voucher">
+                            <option value="Voucher" disabled selected></option>
+                            {% for voucher in vouchers %}
+                                <option value="{{ voucher.code }}">{{ voucher.text }}</option>
+                            {% endfor %}                        
+                        </select><br/>
+                        <a id="submit-option" class="btn btn-default disabled" role="button">Submit choice</a>
+                    </p>
                 </div>
                 
                 <div class="voffset4" id="div-end" style="display: none;">
