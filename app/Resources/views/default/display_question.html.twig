@@ -1,7 +1,7 @@
 <div class="voffset4">
     {{ question.text }}<br/>
     <ul style="list-style: none">
-    {% for answer in question.answers %}
+    {% for answer in question.answers|shuffle %}
         <li>
             <input id="a{{answer.id}}" class="answer" type="checkbox" data-correct="{{question.nocorrectanswers}}" name="q{{question.id}}" value="a{{answer.id}}" />
             {{ answer.text }}
