@@ -44,7 +44,8 @@ $( document ).ready(function() {
         var notAnswered = $('.not-answered');
         
         if(notAnswered.length === 0) {
-            alert("Going to submit the results");
+            saveClicked = true;
+            updateLog("Going to submit the results");
         } else {            
             $('.not-answered').addClass("red-border");
             
@@ -52,6 +53,7 @@ $( document ).ready(function() {
             setTimeout(function() {
                 $('#incomplete').hide();
             }, 2000);
+            e.preventDefault();
         }
     });
     

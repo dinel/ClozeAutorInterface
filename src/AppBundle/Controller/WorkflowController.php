@@ -135,6 +135,18 @@ class WorkflowController extends Controller
                     ));
                 }
                 
+                if(preg_match("/^anaphora_([0-9]+)$/", $state, $matches)) {  
+                    $ancue = $this->getDoctrine()
+                                  ->getRepository('AppBundle:AnaphoricCueingTest')
+                                  ->find($matches[1]);
+                    
+                    return $this->render('default/display_anaphoric_test.html.twig', array(
+                            'text' => $this->processAnaphoricityTest($ancue->getText()),
+                            'title' => $ancue->getTitle(),
+                            'textID' => $ancue->getId(),
+                    ));
+                }
+                
                 if(preg_match("/^cloze_mcq_([0-9]+)$/", $state, $matches)) {  
                     
                     $mcq = $this->getDoctrine()
@@ -227,21 +239,18 @@ class WorkflowController extends Controller
         }
         $session->invalidate();
         
-        $sequences = $this->getTextSelection();
+        $sequences = $this->getClozeSelection();
         $session->set('sequence', $sequences[0]);
-                
-        $workflow = array_merge(['questionnaire', 'instructions_1', 'cloze_mcq_1',
-            'instructions_2', 'cloze_1', 'cloze_mcq_2']);
-                /*
+        
+        
+        $workflow = array_merge(
                 ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire'],
                 $sequences[1], 
-                ['subjective_9', 'reviews_10', 'thank_you']);        
-                 * 
-                 */
+                ['subjective_9', 'thank_you']);        
         
         $session->set('workflow', $workflow);
         
-        $session->set('instruction', 1);
+        $session->set('instruction', 5);
         
         return $this->redirectToRoute("homepage");
     }
@@ -417,6 +426,7 @@ class WorkflowController extends Controller
                 }
             }            
         }
+        
         srand(time());
         usort($selection, function ($a, $b) {
             if($a[1] < $b[1]) return -1;
@@ -436,8 +446,115 @@ class WorkflowController extends Controller
                         'mcq_' . (intval($selection[3][0]) + 4),
                     ]           
                 ];
-    }        
+    }    
+
+    private function getClozeSelection() {
+        $participants = $this->getDoctrine()
+                             ->getRepository("AppBundle:Participant")
+                             ->findAll();
+        
+        $distribution = array();
+        $distribution["A"] = [0, 0, 0, 0];
+        $distribution["B"] = [0, 0, 0, 0];
+        $distribution["C"] = [0, 0, 0, 0];
+        $distribution["D"] = [0, 0, 0, 0];
+        
+        foreach($participants as $participant) {
+            // check if the participant finished
+            if($participant->getFinished() == 0) {
+                continue;
+            }
+            
+            // check if it is the correct experiment
+            if($participant->getSequence()[0] == "P" || $participant->getSequence()[0] == "M") {
+                continue;
+            }
+            
+            $seq = explode("-", $participant->getSequence());
+            /* P1-P3-M2-M4 */
+            foreach($seq as $el) {
+                $distribution[$el[0]][intval($el[1]) - 1]++;
+            }            
+        }
+        
+        $new_experiment = array();
+        $selected = array();
+        
+        foreach($distribution as $key => $value) {
+            $el = $this->getLeast($distribution[$key], $selected);
+            $selected[] = $el;
+            $new_experiment[] = $key . $el;
+        }
+                        
+        /*
+        return [
+                    "P" . $selection[0][0] . "-" . "P" . $selection[1][0] . "-" .
+                    "M" . $selection[2][0] . "-" .  "M" . $selection[3][0],            
+                    [
+                        'prereading_' . $selection[0][0] . '_' . (intval($selection[0][0]) + 4),
+                        'prereading_' . $selection[1][0] . '_' . (intval($selection[1][0]) + 4),
+                        'mcq_' . (intval($selection[2][0]) + 4),
+                        'mcq_' . (intval($selection[3][0]) + 4),
+                    ]           
+                ];
+         * 
+         */
+        shuffle($new_experiment);
+        return [implode("-", $new_experiment), $this->produceMappings($new_experiment)];
+    }  
     
+    private function produceMappings($experiment) {
+        $res = [];
+        
+        foreach($experiment as $step) {
+            if($step[0] == "A") {
+                $res[] = "instructions_7";
+                $res[] = "cloze_mcq_" . strval(10 + intval($step[1]));
+            }
+            
+            if($step[0] == "B") {
+                $res[] = "instructions_8";
+                $res[] = "cloze_" . strval(6 + intval($step[1]));
+                $res[] = "cloze_mcq_" . strval(10 + intval($step[1]));
+            }
+            
+            if($step[0] == "C") {
+                $res[] = "instructions_9";
+                $res[] = "cloze_" . strval(6 + intval($step[1]));
+                $res[] = "cloze_mcq_" . strval(10 + intval($step[1]));
+            }
+            
+            if($step[0] == "D") {
+                $res[] = "instructions_10";
+                $res[] = "anaphora_" . strval(4 + intval($step[1]));
+                $res[] = "cloze_mcq_" . strval(10 + intval($step[1]));
+            }
+        }
+        
+        return $res;
+    }
+
+    private function getLeast($dist, $selected) {
+        $pairs = array();
+        for($i = 0; $i < count($dist); $i++) {
+            if(! in_array(strval($i + 1), $selected)) {
+                $pairs[] = array($dist[$i], $i + 1);
+            }
+        }
+        
+        srand(time());
+        usort($pairs, function ($a, $b) {
+            if($a[0] < $b[0]) return -1;
+            if($a[0] > $b[0]) return 1;
+            if($a[0] === $b[0]) {
+                return rand() % 2 === 0 ? -1 : 1;
+            }
+        });
+        
+        return strval($pairs[0][1]);
+    }
+
+
     private function getInstructions($session) {
         $id = $session->get('instruction');
         $instruction = $this->getDoctrine()
