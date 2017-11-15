@@ -399,6 +399,16 @@ class WorkflowController extends Controller
         $selection = [[1,0], [2,0], [3,0], [4,0]];
         
         foreach($participants as $participant) {
+            // check if the participant finished
+            if($participant->getFinished() == 0) {
+                continue;
+            }
+            
+            // check if it is the correct experiment
+            if($participant->getSequence()[0] != "P" && $participant->getSequence()[0] != "M") {
+                continue;
+            }
+            
             $seq = explode("-", $participant->getSequence());
             /* P1-P3-M2-M4 */
             foreach($seq as $el) {
