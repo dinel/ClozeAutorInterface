@@ -33,8 +33,9 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
-    #twig.extensions:
-    #    class: Twig\Extensions\ArrayExtension
-    #    tags:
-    #    -  { name: twig.extension }
+    
+    twig.extensions:
+        class: Twig\Extensions\ArrayExtension
+        tags:
+        -  { name: twig.extension }
         
