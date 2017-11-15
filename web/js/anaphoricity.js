@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 
+/* global idTest */
+
 var saveClicked = false;
 var operations = "";
 
@@ -13,13 +15,13 @@ $( document ).ready(function() {
         $(this).shuffleChildren();
     });
     
-    updateLog("Opened text");    
+    logAction("Opened text for anaphora " + idTest);    
     
     $('.filler').click(function() {
         var select = $.grep(this.className.split(" "), function(v, i){
                 return v.indexOf('filler-') === 0;
         }).join();
-        console.log(select);
+        logAction("Selected " + $(this).attr('id'));
         $("." + select).removeClass("highlighted");
         $(this).addClass("highlighted");
         $(this).parent().removeClass("red-border");
@@ -33,19 +35,19 @@ $( document ).ready(function() {
     });
     
     $(window).blur(function() {
-        updateLog("Changed");
+        logAction("Changed " + idTest);
     });
     
     $(window).focus(function() {
-        updateLog("Back");
+        logAction("Back " + idTest);
     });
     
-    $('#submit-result').click(function() {
+    $('#submit-result').click(function(e) {
         var notAnswered = $('.not-answered');
         
         if(notAnswered.length === 0) {
             saveClicked = true;
-            updateLog("Going to submit the results");
+            logAction("Submit the results " + idTest);
         } else {            
             $('.not-answered').addClass("red-border");
             
@@ -58,15 +60,6 @@ $( document ).ready(function() {
     });
     
 });
-
-function updateLog(s) {
-    var d = new Date();
-    console.log("At " + d.getHours() + ":" + d.getMinutes() 
-            + ":" + d.getSeconds() + ":" + s);
-    operations += "[" + d.getHours() + ":" + d.getMinutes() 
-            + ":" + d.getSeconds() + ":" + s + "]";
-    console.log(operations);
-}
 
 /* Inspired from https://css-tricks.com/snippets/jquery/shuffle-children/ */
 $.fn.shuffleChildren = function() {

@@ -43,5 +43,9 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        var idTest = {{ textID }};
+    </script> 
     <script src="{{ asset('js/anaphoricity.js') }}"></script>
+    <script src="{{ asset('js/utils.js') }}"></script>
 {% endblock %}
