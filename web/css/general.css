@@ -53,3 +53,7 @@ h2 {
 .red-border {
     border: thin solid red;
 }
+
+.is div {
+    margin-top: 0.5em;
+}

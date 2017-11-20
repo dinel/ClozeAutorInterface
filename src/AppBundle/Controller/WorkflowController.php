@@ -50,14 +50,17 @@ class WorkflowController extends Controller
         
         switch ($state) {
             case 'information_sheet':
-                return $this->render('default/information_sheet.html.twig', []);
+                return $this->render('default/information_sheet.html.twig', [
+                    'type_is' => $request->getSession()->get('type'),
+                ]);
                 
             case 'confirm_age':
                 return $this->render('default/confirm_age.html.twig', []);
                 
             case 'consent_form':
-                return $this->render('default/consent_form_' . $request->getSession()->get("age") . 
-                        '.html.twig');
+                return $this->render('default/consent_form_' . $request->getSession()->get("age") . '.html.twig', [
+                    'type_is' => $request->getSession()->get('type'),
+                ]);
                 
             case 'questionnaire':
                 $participant = new Participant();
@@ -193,7 +196,7 @@ class WorkflowController extends Controller
                 }
         }
         
-        return $this->render('default/information_sheet.html.twig', 
+        return $this->render('default/information_sheet_1.html.twig', 
                 [
                     'time' => date('l jS \of F Y h:i:s A') . "here",
                     'workflow' => $workflow,
@@ -214,6 +217,7 @@ class WorkflowController extends Controller
         
         $sequences = $this->getTextSelection();
         $session->set('sequence', $sequences[0]);
+        $session->set('type', "prereading");
                 
         $workflow = array_merge(
                 ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire'],
@@ -241,6 +245,7 @@ class WorkflowController extends Controller
         
         $sequences = $this->getClozeSelection();
         $session->set('sequence', $sequences[0]);
+        $session->set('type', "cloze");
         
         
         $workflow = array_merge(

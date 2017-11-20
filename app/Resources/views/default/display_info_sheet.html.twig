@@ -4,7 +4,11 @@
         <hr width="75%" class="text-center">
         <a class="btn btn-default voffset4" id="btn-show-sheet" role="button"><span class="btn-message">Show again information sheet</span><span class="btn-message" style="display: none">Hide information sheet</span></a>
         <div id="info-sheet" style="display: none;">
-            {% include 'default/info_sheet_actual.html.twig' %}
+            {% if type_is == "prereading" %}
+                {% include 'default/info_sheet_actual.html.twig' %}
+            {% else %}
+                {% include 'default/info_sheet_cloze_actual.html.twig' %}
+            {% endif %}
         </div>
     </div>
 </div>

@@ -8,7 +8,11 @@
                     <h1>Information sheet</h1>
                 </div>
 
-                {% include 'default/info_sheet_actual.html.twig' %}
+                {% if type_is == "prereading" %}
+                    {% include 'default/info_sheet_actual.html.twig' %}
+                {% else %}
+                    {% include 'default/info_sheet_cloze_actual.html.twig' %}
+                {% endif %}
             
                 <div class="voffset5">
                     <p class="text-center"><a class="btn btn-default" href="{{ path('next') }}" role="button">
