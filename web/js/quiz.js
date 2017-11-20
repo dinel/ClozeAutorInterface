@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* global idQuiz */
+/* global idQuiz, prereading */
 
 var questions_answered = [];
 var filter = "";
@@ -68,6 +68,14 @@ $( document ).ready(function() {
         $('#rating').hide();
         logAction("Started answering MCQ " + idQuiz);
         $('#mcq').show();
+        if(prereading === 2) {
+            $('#btn-text-container').show();
+        }
+    });
+    
+    $('.btn-message').click(function() {
+       $('#text').toggle();
+       $('.btn-message').toggle();
     });
     
     $('#text-difficulty').change(function() {

@@ -159,7 +159,17 @@ class WorkflowController extends Controller
                     return $this->render('default/display_cloze_quiz.html.twig', array(
                             'mcq' => $mcq,
                     ));
-                }                                
+                }       
+                
+                if(preg_match("/^cloze_mcq_baseline_([0-9]+)$/", $state, $matches)) {                      
+                    $mcq = $this->getDoctrine()
+                                ->getRepository('AppBundle:Quiz')
+                                ->find($matches[1]);
+                    
+                    return $this->render('default/display_quiz_baseline.html.twig', array(
+                            'mcq' => $mcq,
+                    ));
+                } 
                 
                 if(preg_match("/^subjective_([0-9]+)$/", $state, $matches)) {
                     $instructions = $this->getInstructions($request->getSession());
@@ -491,19 +501,6 @@ class WorkflowController extends Controller
             $new_experiment[] = $key . $el;
         }
                         
-        /*
-        return [
-                    "P" . $selection[0][0] . "-" . "P" . $selection[1][0] . "-" .
-                    "M" . $selection[2][0] . "-" .  "M" . $selection[3][0],            
-                    [
-                        'prereading_' . $selection[0][0] . '_' . (intval($selection[0][0]) + 4),
-                        'prereading_' . $selection[1][0] . '_' . (intval($selection[1][0]) + 4),
-                        'mcq_' . (intval($selection[2][0]) + 4),
-                        'mcq_' . (intval($selection[3][0]) + 4),
-                    ]           
-                ];
-         * 
-         */
         shuffle($new_experiment);
         return [implode("-", $new_experiment), $this->produceMappings($new_experiment)];
     }  
@@ -514,7 +511,7 @@ class WorkflowController extends Controller
         foreach($experiment as $step) {
             if($step[0] == "A") {
                 $res[] = "instructions_7";
-                $res[] = "cloze_mcq_" . strval(10 + intval($step[1]));
+                $res[] = "cloze_mcq_baseline_" . strval(10 + intval($step[1]));
             }
             
             if($step[0] == "B") {
