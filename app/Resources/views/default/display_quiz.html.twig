@@ -42,21 +42,7 @@
                     <div class="centre-text"><a class="btn btn-default voffset4" id="btn-text" role="button">Next</a></div>
                 </div>
                 
-                <div id="rating" style="display: none;">
-                    <div>
-                        <h2>How easy or difficult did you find this text? 
-                        <select id="text-difficulty">
-                            <option value="none" disabled selected></option>
-                            <option value="veryeasy">Very easy</option>
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="difficult">Difficult</option>
-                            <option value="verydifficult">Very difficult</option>
-                        </select>
-                            </h2>
-                    </div>
-                    <a class="btn btn-default voffset4 disabled" id="btn-rate" role="button">Next</a>
-                </div>
+                {% include 'default/rate_text.html.twig' with {'style':'style="display: none;"'} %}                
                 
                 <div id="mcq" style="display: none;">
                     <h1>Multiple choice questions</h1>
