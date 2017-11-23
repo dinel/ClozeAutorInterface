@@ -259,13 +259,13 @@ class WorkflowController extends Controller
         
         
         $workflow = array_merge(
-                ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire'],
+                ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire', 'instructions_11'],
                 $sequences[1], 
-                ['subjective_9', 'thank_you']);        
+                ['subjective_15', 'thank_you']);        
         
         $session->set('workflow', $workflow);
         
-        $session->set('instruction', 5);
+        $session->set('instruction', 12);
         
         return $this->redirectToRoute("homepage");
     }
@@ -522,7 +522,7 @@ class WorkflowController extends Controller
             
             if($step[0] == "C") {
                 $res[] = "instructions_9";
-                $res[] = "cloze_" . strval(6 + intval($step[1]));
+                $res[] = "cloze_" . strval(10 + intval($step[1]));
                 $res[] = "cloze_mcq_" . strval(10 + intval($step[1]));
             }
             
