@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/css/cloze.css" rel="stylesheet">
+    </head>
+    <body>
+<script>        
+    var no_gaps = 10;
+    var filled_gaps = 0;
+    var idTest = -1;
+</script>
+Great work!<br />
+<br />
+When you press the &quot;next&quot; button below, you will be shown a text that has a few gaps (missing words). You will see a list of jumbled words on the right hand side of the text. Your task is to put the correct word for each gap in the text. <br />
+<br />
+
+Here is an example of how this looks:<br /><br /><br />
+
+<div class="voffset5" style="height: 100px; border: black thin solid; padding: 1em;">
+    <div id="text" style="width: 60%; float: left; height: 50px; padding-top: 35px;">
+        <span>Mary has a</span>
+        <div id="gap0" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
+        <span>and she likes playing with it instead of doing her </span>
+        <div id="gap1" ondrop="drop(event)" ondragover="allowDrop(event)" class="gap">&nbsp;</div>
+        <span>for tomorrow.</span>
+    </div>
+    <div id="words" style="float: right; height: 50px; ">
+        <div id="word0" ondragstart="drag(event)" class="filler filler-in-list" draggable="true">doll</div>
+        <div id="word1" ondragstart="drag(event)" class="filler filler-in-list" draggable="true">homework</div>
+    </div>
+</div>
+
+<div style="clear: both;">
+
+<br />
+In this case you have to drag and drop to correct word  (doll) to fill in the gap.<br />
+<br />
+1) If you think you have made a mistake, you can correct your choice of words as many times as you wish. To do that you can press the red X, which appears next to the word if you put the mouse pointer over it. <br />
+<br />
+2) Once you have filled in all gaps, please press the &quot;next&quot; button shown below to proceed.<br />
+<br />
+3) You will then need to answer a question  about how easy or difficult you found the text. Press &quot;next&quot; after you have selected your answer.<br />
+<br />
+4) You will now be shown a list of reading comprehension questions that you have to answer. You can have a look at the text again by pressing the &quot;Show the text again&quot; button. You can have a look at the text as many times as you wish while answering the comprehension questions.<br />
+<br />
+5) Once you have finished, press the &quot;next&quot; button to move on.
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/utils.js"></script>
+<script src="/js/cloze.js"></script>
+
+</html>
