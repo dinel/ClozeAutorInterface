@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+Copyright 2017 dinel.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/css/anaphoricity.css" rel="stylesheet">
+    </head>
+    <body>
+You are doing fantastic!<br />
+<br />
+You will now see a text in which some words are in red. Below each red word there is a choice of three other words. Your task is to select the word that has the same meaning in the sentence as the word in red. Here is an example of how this looks like:<br />
+<br />
+
+<div class="voffset5" style="height: 100px; border: black thin solid; padding: 1em;">
+<span>Mary has a doll with a blond hair and a blue dress.</span>
+<div id="gap1" class="gap gap-position">She
+    <div class="gap-fillers not-answered" id="words1">
+                                                    <div id="word-1-1" class="filler filler-1">Mary</div>
+                                                    <div id="word-1-2" class="filler filler-1">the doll</div>
+                                                    <div id="word-1-3" class="filler filler-1">the hair</div>
+
+    </div>                                    
+</div>
+<span>likes playing with it.</span>
+</div>
+
+<br />
+You can choose the correct word by clicking on it.<br />
+<br />
+1) If you think you have made a mistake, you can correct your choice of words as many times as you wish. To do that you should simply click on the word that you think is correct.<br />
+<br />
+2) Once you have completed the exercise, please press the &quot;next&quot; button shown below to proceed.<br />
+<br />
+3) You will then need to answer a question  about how easy or difficult you found the text. Press &quot;next&quot; after you have selected your answer.<br />
+<br />
+4) You will now be shown a list of reading comprehension questions that you have to answer. You can have a look at the text again by pressing the &quot;Show the text again&quot; button. You can have a look at the text as many times as you wish while answering the comprehension questions.<br />
+<br />
+5) Once you have finished, press the &quot;next&quot; button to move on.   
+
+<script>
+    var idTest = -1;
+</script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/anaphoricity.js"></script>
+<script src="/js/utils.js"></script>
+    
+    </body>
+</html>
