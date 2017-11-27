@@ -95,7 +95,7 @@ $( document ).ready(function() {
     });
     
     $(window).bind('beforeunload', function(){
-        if(! saveClicked) {
+        if(! saveClicked && idTest != -1) {
             return 'Your work is not saved. Are you sure you want to continue?';
         }
     });
