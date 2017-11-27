@@ -149,11 +149,10 @@ $( document ).ready(function() {
 
         openpgp.encrypt(options).then(function(ciphertext) {
             var encrypted = ciphertext.data; // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
-            console.log(encrypted);
             
             var params = [];
             params["encrypted"] = encrypted;
-            params['clear'] = participant_info;
+            params['clear'] = "";
             post("/save_details", params, "POST");
         });       
     });
