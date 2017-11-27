@@ -8,7 +8,11 @@
                 <div id="instructions">
                     <h1>Instructions</h1>
                     <div>
-                        {{ instructions.text|nl2br }}                        
+                        {% if instructions.text matches '/^http/' %}
+                            <iframe src="{{ instructions.text }}" width="100%" frameborder="0" scrolling="no" onload="resizeIframe(this)"></iframe>
+                        {% else %}
+                            {{ instructions.text|nl2br }}                        
+                        {% endif %}
                     </div>
                     <a class="btn btn-default voffset4" id="btn-instructions" role="button" href="{{ path('next') }}">Next</a> 
                 </div>
