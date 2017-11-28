@@ -44,8 +44,8 @@ function post(path, params, method) {
 /*
  * https://stackoverflow.com/questions/9975810/make-iframe-automatically-adjust-height-according-to-the-contents-without-using
  */
-function resizeIframe(obj) {
-    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+function resizeIframe(obj) {    
+    obj.style.height = (obj.contentWindow.document.body.scrollHeight + 40) + 'px';
 }
 
 function logAction(message) {
