@@ -314,7 +314,8 @@ class WorkflowController extends Controller
         $message = (new \Swift_Message('Hello Email'))
         ->setFrom('c.orasan@wlv.ac.uk')
         ->setTo($this->getFirstSignature()->getEmail())
-        ->setSubject("Participant" . $id)
+        ->setSubject("Participant" . $id . ' (' 
+                . $request->getSession()->get('type') . ')')
         ->setBody(
                 $clear . "\n" . $encrypted
         );
