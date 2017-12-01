@@ -18,6 +18,7 @@
 
 var questions_answered = [];
 var filter = "";
+var saveClicked = false;
 
 $( document ).ready(function() {
     $('#btn-instructions').click(function() {
@@ -95,7 +96,8 @@ $( document ).ready(function() {
         }
         
         if(flag === 0) {
-            logAction("Finished with quiz " + idQuiz);            
+            logAction("Finished with quiz " + idQuiz);  
+            saveClicked = true;
         } else {
             $('#incomplete-mcq').show();
             setTimeout(function() {
@@ -141,6 +143,20 @@ $( document ).ready(function() {
                 questions_answered.splice(index, 1);
             }
         }
+    });
+        
+    $(window).bind('beforeunload', function(){
+        if(! saveClicked && idQuiz != -1) {
+            return 'Your work is not saved. Are you sure you want to continue?';
+        }
+    });
+    
+    $(window).blur(function() {
+        logAction("Changed to a different window");
+    });
+    
+    $(window).focus(function() {
+        logAction("Back to quiz window " + idQuiz);
     });
     
     logAction("Opened instructions for ID:" + idQuiz);
