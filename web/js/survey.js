@@ -130,7 +130,7 @@ $( document ).ready(function() {
         participant_info += "ASD: " + participant["asd"] + "\n";
         participant_info += "Dyslexia: " + participant["dys"] + "\n";
         participant_info += "Aphasia: " + participant["aph"] + "\n";
-        participant_info += "Other conditions: " + $('#other-conditions').val() + "\n";
+        participant_info += "Other conditions: " +  + "\n";
         participant_info += "Diagnosis date: " + $('#diag-date').val() + "\n";
         participant_info += "English native: " + participant["en_nat"] + "\n";
         participant_info += "Other languages: " + $('#list-langs').text() + "\n";
@@ -139,8 +139,17 @@ $( document ).ready(function() {
         } else {
             participant_info += "Reading: " + $('#freq option:checked').val() + "\n";
         }
-        participant_info += "Current employment: " + participant["employed"]+ "\n";
-        participant_info += "Past employment: " + participant["past_employed"]+ "\n";        
+        participant_info += "Current employment: " + participant["employed"] + "\n";
+        participant_info += "Past employment: " + participant["past_employed"] + "\n";
+        
+        participant_info += "\n\"" + participant["name"] + "\","
+                + participant["email"] + "," + participant["age"] + "," 
+                + participant["year_edu"] + "," + participant["asd"] + "," 
+                + participant["dys"] + "," + participant["aph"] + ",\"" 
+                + $('#other-conditions').val() + "\",\"" + $('#diag-date').val() + "\"," 
+                + participant["en_nat"] + ",\"" + $('#list-langs').text() + "\"," 
+                + participant["read"]  + "," + $('#freq option:checked').val() + "," 
+                + participant["employed"] + "," + participant["past_employed"] + "\n";
         
         options = {
             data: participant_info,                             // input as String (or Uint8Array)
