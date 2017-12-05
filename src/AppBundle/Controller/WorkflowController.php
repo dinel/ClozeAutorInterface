@@ -214,7 +214,7 @@ class WorkflowController extends Controller
     }
     
     /**
-     * @Route("/start", name="start")
+     * @Route("/start-prereading", name="start")
      */
     public function startAction(Request $request) {
         if(! $this->container->get('session')->isStarted()) {
