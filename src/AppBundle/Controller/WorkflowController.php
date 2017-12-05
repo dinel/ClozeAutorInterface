@@ -563,7 +563,9 @@ class WorkflowController extends Controller
         $instruction = $this->getDoctrine()
                             ->getRepository("AppBundle:Instruction")
                             ->find($id);
-        $session->set('instruction', $id + 1);
+        if($id !== 12) {
+            $session->set('instruction', $id + 1);
+        }
         
         return $instruction;        
     }
