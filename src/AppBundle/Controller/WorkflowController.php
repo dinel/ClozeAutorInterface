@@ -331,6 +331,19 @@ class WorkflowController extends Controller
     }
     
     /**
+     * @Route("/get-voucher-report")
+     */
+    public function getVoucherReportAction(Request $request, \Swift_Mailer $mailer) {
+        $participants = $this->getDoctrine()
+                             ->getRepository('AppBundle:Participant')
+                             ->findAll();
+            
+        return $this->render('default/vouchers.html.twig', [
+            'participants' => $participants,            
+        ]);              
+    }
+
+    /**
      * @Route("/log_action")
      * @Method({"POST"})
      */
