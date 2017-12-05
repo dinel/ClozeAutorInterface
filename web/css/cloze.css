@@ -52,4 +52,5 @@ and open the template in the editor.
     padding-top:20px;
     padding-left: 3em;
     overflow-y: auto;
+    min-width: 150px;
 }
