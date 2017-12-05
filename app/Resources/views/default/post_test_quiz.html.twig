@@ -20,9 +20,9 @@
                     <h1>Survey</h1>
                     {% for question in quiz.questions %}
                         {% if question.open == 1 %}
-                            {% include 'default/display_open_question.html.twig' with {'question': question } %}
+                            {% include 'default/display_open_question.html.twig' with {'question': question} %}
                         {% else %}
-                            {% include 'default/display_question.html.twig' with {'question': question } %}
+                            {% include 'default/display_question.html.twig' with {'question': question, 'not_random': 1 } %}
                         {% endif %}
                     {% endfor %}
                     <a class="btn btn-default voffset4" id="btn-submit-mcq" role="button" href="{{ path('next') }}">Next</a>
