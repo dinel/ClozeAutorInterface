@@ -1,12 +1,21 @@
 <div class="voffset4">
     {{ question.text|replace({"((":"<b>", "))":"</b>"}) | raw}}<br/>
     <ul style="list-style: none">
-    {% for answer in question.answers|shuffle %}
-        <li>
-            <input id="a{{answer.id}}" class="answer" type="checkbox" data-correct="{{question.nocorrectanswers}}" name="q{{question.id}}" value="a{{answer.id}}" />
-            {{ answer.text | replace({"((":"<b>", "))":"</b>"}) | raw}}
-        </li>
-    {% endfor %}                        
+    {% if not_random is defined %}
+        {% for answer in question.answers %}
+            <li>
+                <input id="a{{answer.id}}" class="answer" type="checkbox" data-correct="{{question.nocorrectanswers}}" name="q{{question.id}}" value="a{{answer.id}}" />
+                {{ answer.text | replace({"((":"<b>", "))":"</b>"}) | raw}}
+            </li>
+        {% endfor %}                        
+    {% else %}
+        {% for answer in question.answers|shuffle %}
+            <li>
+                <input id="a{{answer.id}}" class="answer" type="checkbox" data-correct="{{question.nocorrectanswers}}" name="q{{question.id}}" value="a{{answer.id}}" />
+                {{ answer.text | replace({"((":"<b>", "))":"</b>"}) | raw}}
+            </li>
+        {% endfor %}                        
+    {% endif %}
     </ul>
 
     <div id="help-q{{question.id}}">
