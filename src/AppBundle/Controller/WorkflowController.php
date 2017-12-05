@@ -236,7 +236,8 @@ class WorkflowController extends Controller
         
         $session->set('workflow', $workflow);
         
-        $session->set('instruction', 1);
+        // ugly hack to avoid refresh problem
+        $session->set('instruction', -3);
         
         return $this->redirectToRoute("homepage");
     }    
@@ -277,6 +278,11 @@ class WorkflowController extends Controller
         $workflow = $request->getSession()->get('workflow');
         if(! $workflow) {
             return $this->redirectToRoute("start");
+        }
+        
+        $id = $request->getSession()->get('instruction');
+        if($id !== 12) {
+            $request->getSession()->set('instruction', $id + 1);
         }
         
         $state = array_shift($workflow);
@@ -562,10 +568,7 @@ class WorkflowController extends Controller
         $id = $session->get('instruction');
         $instruction = $this->getDoctrine()
                             ->getRepository("AppBundle:Instruction")
-                            ->find($id);
-        if($id !== 12) {
-            $session->set('instruction', $id + 1);
-        }
+                            ->find($id);        
         
         return $instruction;        
     }
