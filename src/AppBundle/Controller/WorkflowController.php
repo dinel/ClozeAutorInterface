@@ -241,36 +241,7 @@ class WorkflowController extends Controller
         
         return $this->redirectToRoute("homepage");
     }    
-    
-    /**
-     * @Route("/start-cloze")
-     */
-    public function startClozeAction(Request $request) {
-        if(! $this->container->get('session')->isStarted()) {
-            $session = new Session();
-            $session->start();
-        } else {
-            $session = $request->getSession();
-        }
-        $session->invalidate();
         
-        $sequences = $this->getClozeSelection();
-        $session->set('sequence', $sequences[0]);
-        $session->set('type', "cloze");
-        
-        
-        $workflow = array_merge(
-                ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire', 'instructions_11'],
-                $sequences[1], 
-                ['subjective_15', 'thank_you']);        
-        
-        $session->set('workflow', $workflow);
-        
-        $session->set('instruction', 12);
-        
-        return $this->redirectToRoute("homepage");
-    }
-
     /**
      * @Route("/next", name="next")
      */
