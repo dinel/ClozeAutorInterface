@@ -212,38 +212,9 @@ class WorkflowController extends Controller
                     'workflow' => $workflow,
                 ]);
     }
-    
+           
     /**
-     * @Route("/start-prereading", name="start")
-     */
-    public function startAction(Request $request) {
-        if(! $this->container->get('session')->isStarted()) {
-            $session = new Session();
-            $session->start();
-        } else {
-            $session = $request->getSession();
-        }
-        $session->invalidate();
-        
-        $sequences = $this->getTextSelection();
-        $session->set('sequence', $sequences[0]);
-        $session->set('type', "prereading");
-                
-        $workflow = array_merge(
-                ['information_sheet', 'confirm_age', 'consent_form', 'questionnaire'],
-                $sequences[1], 
-                ['subjective_9', 'reviews_10', 'thank_you']);        
-        
-        $session->set('workflow', $workflow);
-        
-        // ugly hack to avoid refresh problem
-        $session->set('instruction', -3);
-        
-        return $this->redirectToRoute("homepage");
-    }    
-    
-    /**
-     * @Route("/start-cloze")
+     * @Route("/start-cloze", name="start")
      */
     public function startClozeAction(Request $request) {
         if(! $this->container->get('session')->isStarted()) {
