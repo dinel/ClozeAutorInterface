@@ -321,7 +321,7 @@ class WorkflowController extends Controller
         ->setFrom('c.orasan@wlv.ac.uk')
         ->setTo($this->getFirstSignature()->getEmail())
         ->setSubject("Participant" . $id . ' (' 
-                . $request->getSession()->get('type') . ')')
+                . $request->getSession()->get('type') . '-control)')
         ->setBody(
                 $clear . "\n" . $encrypted
         );
