@@ -95,6 +95,9 @@ class WorkflowController extends Controller
                         'vouchers' => $vouchers,
                 ));
                 
+            case 'thank_you_resume':
+                return $this->render('default/thankyou-simple.html.twig');
+                
             default:
                 if(preg_match("/^prereading_([0-9]+)_([0-9]+)$/", $state, $matches)) {
                     $instructions = $this->getInstructions($request->getSession());
@@ -269,6 +272,36 @@ class WorkflowController extends Controller
         $session->set('instruction', 12);
         
         return $this->redirectToRoute("homepage");
+    }
+    
+    /**
+     * @Route("/resume/{id}")
+     */
+    public function resumeAction(Request $request, $id) {
+        $resume = $this->getDoctrine()
+                       ->getRepository("AppBundle:Resume")
+                       ->find($id);
+        
+        if($resume && !$resume->getUsed()) {
+            $workflow = explode(",", $resume->getSequence());
+            //['mcq_5', 'subjective_9', 'reviews_10'];
+
+            $session = $request->getSession();
+            $session->invalidate();
+
+            $session->set('workflow', $workflow);       
+            $session->set('instruction', $resume->getInstructions());
+            $session->set("participantID", $resume->getParticipant());
+            
+            $em = $this->getDoctrine()->getManager();        
+            $resume->setUsed(1);
+            $em->persist($resume);
+            $em->flush();  
+
+            return $this->redirectToRoute("homepage");
+        } else {
+            return $this->render("default/thankyou-simple.html.twig");
+        }
     }
 
     /**
